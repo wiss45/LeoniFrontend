@@ -1,0 +1,72 @@
+<div class="flex">
+
+    <!-- Sidebar -->
+    <div class="bg-white w-1/5 p-4 hidden lg:block shadow-lg h-screen">
+  
+ <!-- Title sidebar -->
+<div class="mb-6 text-center grid justify-start  border-b border-gray-300 pb-1">
+    <h1 class="text-2xl font-bold text-blue-900 tracking-wide uppercase">
+      LEONI
+    </h1>
+    <p class="text-xs text-gray-500 tracking-widest">
+      Innovating Solutions
+    </p>
+  </div>
+  
+  
+  
+      <!-- Sidebar -->
+      <div class=" border-gray-200 mb-4  ">
+        <ul class="ml-6 space-y-6 mb-6 ">
+          <li *ngFor="let menu of sidebarItems" class="relative flex items-center gap-2">
+            <lucide-icon [name]="menu.icon" class="w-5 h-5 text-gray-600"></lucide-icon>
+            <a [routerLink]="menu.link" (click)="activeItems(menu.name)" [ngClass]="{'underline text-blue-900' : menu.name===itemActive}" class="text-black font-semibold text-sm hover:underline cursor-pointer" >
+              {{ menu.name }}
+            </a>
+            
+          </li>
+  
+        </ul>
+        
+      </div>
+  
+    </div>
+  
+    <!-- Main Content -->
+    <div class="w-full h-screen flex flex-col overflow-auto">
+  
+      <!-- Navbar  -->
+      <div class="bg-white flex justify-end max-md:justify-between items-center px-6 py-3 border-b border-gray-300">
+        <a (click)="toggleIconHamburger()" class="hidden max-md:block "><svg xmlns="http://www.w3.org/2000/svg"
+            class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg></a>
+  
+        <a (click)="toggleIconUser()"  class="relative "><img src="https://portkennedyps.wa.edu.au/wp-content/uploads/2017/06/user-icon-male.jpg"
+            class="w-10 h-10 text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+           </a>
+  
+        <div *ngIf="isOpenuser" class="absolute bg-white shadow rounded w-40 right-10 top-12 p-2 grid gap-2 z-10">
+          <div class="hover:bg-blue-50 p-2 rounded">
+            <h1 class="text-sm text-gray-800 font-medium">{{username}}</h1>
+          </div>
+          <div class="hover:bg-blue-50 p-2 rounded">
+            <h1 class="text-sm text-gray-800 font-medium">Profil</h1>
+          </div>
+          <div class="hover:bg-red-100 border-t border-gray-300 p-2 rounded text-red-500 cursor-pointer">
+            <h1  class="text-md text-sm font-medium  ">Déconnexion</h1>
+          </div>
+        </div>
+  
+       
+      </div>
+      
+  
+      
+      <!-- Content -->
+      <div class="flex-1 px-6 py-4">
+        <router-outlet></router-outlet>
+      </div>
+  
+    </div>
+  </div>

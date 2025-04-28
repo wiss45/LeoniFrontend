@@ -1,0 +1,23 @@
+<div class="p-8 space-y-8 bg-gray-100">
+
+    <!-- Titre -->
+    <h1 class="text-4xl font-semibold text-center text-blue-600 mb-8">Statistiques Globaux</h1>
+  
+    <!-- Section des Statistiques -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8">
+      
+      <!-- Carte des Projets -->
+      <div *ngFor="let stat of stats" class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center justify-center space-y-4">
+        <!-- Cercle de Statistique -->
+        <div class="w-24 h-24 rounded-full {{ stat.color }} text-white flex items-center justify-center text-3xl font-semibold">
+          {{ stat.value }}
+        </div>
+        <p class="text-xl text-center font-medium text-gray-700">{{ stat.label }}</p>
+        <div class="w-full h-1 bg-gray-200"></div>
+        <p class="text-lg text-center text-gray-500">Total</p>
+      </div>
+  
+    </div>
+  
+  </div>
+  
