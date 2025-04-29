@@ -1,0 +1,106 @@
+<div>
+    <div class="relative overflow-x-auto shadow-md hover:shadow-lg sm:rounded-lg grid gap-8 p-4 w-full pb-20">
+      <div class="flex justify-between border-b-1 border-gray-200 gap-4">
+        <div class="flex flex-col sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between">
+          <div class="relative mb-4">
+            <div class="absolute inset-y-0 left-0 flex items-center ps-3 pointer-events-none">
+              <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <input type="text" (input)="search()" [(ngModel)]="inputSearch" id="table-search" class="outline-none block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50" placeholder="Chercher Equipement">
+          </div>
+        </div>
+  
+        <div class="flex gap-4">
+  
+          <button (click)="openModalAjout(equipement!)" class="cursor-pointer bg-black rounded-md hover:opacity-90 py-2 px-4 text-white font-medium text-sm mb-4">Nouveau Equipement</button>
+        </div>
+      </div>
+  
+      <table class="w-full text-xs text-left text-gray-500 mb-10">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+          <tr>
+            <th class="px-4 py-2">Nom</th>
+            <th class="px-4 py-2">Prix Unitaire 1</th>
+            <th class="px-4 py-2">Prix Unitaire 2</th>
+            <th class="px-4 py-2">Prix Unitaire 3</th>
+            <th class="px-4 py-2">Délai (j)</th>
+            <th class="px-4 py-2">Transport (j)</th>
+            <th class="px-4 py-2">Installation (j)</th>
+            <th class="px-4 py-2">Fournisseur</th>
+            <th class="px-4 py-2">Prix Total</th>
+            <th class="px-4 py-2">Type CAPEX</th>
+            <th class="px-4 py-2">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="bg-white border-b hover:bg-gray-50" *ngFor="let equipement of filtredList">
+            <td class="px-4 py-2 text-gray-900 whitespace-nowrap">
+              {{ equipement.name }}
+            </td>
+            <td class="px-4 py-2">
+              {{ equipement.firstUnitPrice | number: '1.2-2' }} €
+            </td>
+            <td class="px-4 py-2">
+              {{ equipement.secondUnitPrice | number: '1.2-2' }} €
+            </td>
+            <td class="px-4 py-2">
+              {{ equipement.thirdUnitPrice | number: '1.2-2' }} €
+            </td>
+            <td class="px-4 py-2">
+              {{ equipement.leadTime }} j
+            </td>
+            <td class="px-4 py-2">
+              {{ equipement.transportationTime }} j
+            </td>
+            <td class="px-4 py-2">
+              {{ equipement.installationTime }} j
+            </td>
+            <td class="px-4 py-2">
+              {{ equipement.supplier }}
+            </td>
+            <td class="px-4 py-2">
+              {{ equipement.price | number: '1.2-2' }} €
+            </td>
+            <td class="px-4 py-2">
+              {{ equipement.capexType }}
+            </td>
+            <td class="px-4 py-2 flex gap-3">
+              <button  class="text-blue-500 hover:text-blue-700">
+                ✏️
+              </button>
+              <button (click)="delEquipements(equipement.id)" class="text-red-500 hover:text-red-700">
+                🗑️
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      
+  
+      <div class="flex gap-3 justify-center">
+        <button class="border-1 border-gray-200 rounded-md shadow px-2 py-1 font-medium hover:text-white hover:bg-black transition">
+          Précédent
+        </button>
+        <button class="border-1 border-gray-200 rounded-md shadow px-4 py-1 font-medium hover:text-white hover:bg-black transition">
+          1
+        </button>
+        <button class="border-1 border-gray-200 rounded-md shadow px-2 py-1 font-medium hover:text-white hover:bg-black transition">
+          Suivant
+        </button>
+      </div>
+    </div>
+
+    <app-addequipement
+    [IsOpen]="isOpen"
+    [Equipement]="equipement"
+    [TitleModal]="'Ajout Equipement'"
+    (CloseModal)="closeModal()"
+    (saveEquipement)="add(equipement!)"
+    >
+
+    </app-addequipement>
+  </div>
+  

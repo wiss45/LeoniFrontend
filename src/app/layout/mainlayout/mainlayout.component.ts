@@ -12,11 +12,11 @@ export class MainlayoutComponent {
   isOpenuser: boolean = false;
   isOpenHamburger: boolean = false;
   itemActive :  string = ''
-  username = sessionStorage.getItem('username')
+
 
    sidebarItems = [
   { name: "Dashboard", link: "/users", icon: "layout-dashboard" },
-  { name: "Equipements", link: "/users/patients", icon: "server" },
+  { name: "Equipements", link: "/users/equipements", icon: "server" },
   { name: "Project", link: "/users/horraires", icon: "briefcase" },
   { name: "Plans", link: "/users/factures", icon: "file-text" },
 ];

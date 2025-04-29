@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MainlayoutComponent } from './layout/mainlayout/mainlayout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { EquipementModule } from './pages/equipement/equipement.module';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
     BrowserModule,
     AppRoutingModule,
     LucideAngularModule.pick({ LayoutDashboard, Server, Briefcase, FileText }),
+    EquipementModule,
   
   ],
   providers: [

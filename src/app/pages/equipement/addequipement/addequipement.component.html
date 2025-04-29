@@ -1,0 +1,90 @@
+<div class="fixed inset-0 bg-black/80 flex items-center justify-center z-50" *ngIf="IsOpen && Equipement">
+    <div class="bg-white rounded-2xl shadow-lg w-full max-w-2xl p-6">
+      <div class="flex justify-between items-center border-b pb-4 mb-4">
+        <h2 class="text-xl font-semibold">{{ TitleModal }}</h2>
+        <button (click)="close()" class="text-gray-500 hover:text-red-500 text-xl font-bold">&times;</button>
+      </div>
+  
+      <form (ngSubmit)="submit()" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium">Nom</label>
+            <input type="text" [(ngModel)]="Equipement!.name" name="name" required
+              placeholder="Nom"
+              class="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-300" />
+          </div>
+  
+          <div>
+            <label class="block text-sm font-medium">Prix unitaire 1</label>
+            <input type="number" [(ngModel)]="Equipement!.firstUnitPrice" name="firstUnitPrice" required
+              placeholder="Prix unitaire 1"
+              class="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-300" />
+          </div>
+  
+          <div>
+            <label class="block text-sm font-medium">Prix unitaire 2</label>
+            <input type="number" [(ngModel)]="Equipement!.secondUnitPrice" name="secondUnitPrice" required
+              placeholder="Prix unitaire 2"
+              class="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-300" />
+          </div>
+  
+          <div>
+            <label class="block text-sm font-medium">Prix unitaire 3</label>
+            <input type="number" [(ngModel)]="Equipement!.thirdUnitPrice" name="thirdUnitPrice" required
+              placeholder="Prix unitaire 3"
+              class="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-300" />
+          </div>
+  
+          <div>
+            <label class="block text-sm font-medium">Délai de fabrication (jours)</label>
+            <input type="number" [(ngModel)]="Equipement!.leadTime" name="leadTime" required
+              placeholder="Délai de fabrication"
+              class="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-300" />
+          </div>
+  
+          <div>
+            <label class="block text-sm font-medium">Temps de transport (jours)</label>
+            <input type="number" [(ngModel)]="Equipement!.transportationTime" name="transportationTime" required
+              placeholder="Temps de transport"
+              class="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-300" />
+          </div>
+  
+          <div>
+            <label class="block text-sm font-medium">Temps d'installation (jours)</label>
+            <input type="number" [(ngModel)]="Equipement!.installationTime" name="installationTime" required
+              placeholder="Temps d'installation"
+              class="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-300" />
+          </div>
+  
+          <div>
+            <label class="block text-sm font-medium">Fournisseur</label>
+            <input type="text" [(ngModel)]="Equipement!.supplier" name="supplier" required
+              placeholder="Fournisseur"
+              class="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-300" />
+          </div>
+  
+          <div>
+            <label class="block text-sm font-medium">% Ajouter Par Ans</label>
+            <input type="number" [(ngModel)]="Equipement!.price" name="price" required
+              placeholder="% Ajouter Par Ans"
+              class="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-300" />
+          </div>
+  
+          <div>
+            <label class="block text-sm font-medium">Type CAPEX</label>
+            <input type="text" [(ngModel)]="Equipement!.capexType" name="capexType" required
+              placeholder="Type CAPEX"
+              class="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-300" />
+          </div>
+        </div>
+  
+        <div class="flex justify-end pt-4 space-x-3 border-t mt-6">
+          <button type="button" (click)="close()"
+            class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-700">Annuler</button>
+          <button type="submit"
+            class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

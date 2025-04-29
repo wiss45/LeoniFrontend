@@ -9,7 +9,7 @@ const routes: Routes = [
     children: [
       
       { path: "", component: DashboardComponent },
-     
+      {path:'equipements',loadChildren : ()=>import('./pages/equipement/equipement.module').then(m =>m.EquipementModule) },
     ]
     
   }
