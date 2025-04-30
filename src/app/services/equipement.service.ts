@@ -3,7 +3,8 @@ import { Observable } from 'rxjs';
 import { Equipement } from '../interfaces/equipement';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
-import { PaginatedResponse } from '../interfaces/PaginatedResponseEquipements';
+import { PaginatedResponseEquipement } from '../interfaces/PaginatedResponseEquipements';
+
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,12 @@ export class EquipementService {
     return this.http.post<Equipement>(`${this.apiUrl}`, equipement);
   }
 
-  getAllEquipements(page: number, size: number): Observable<PaginatedResponse<Equipement>> {
-    return this.http.get<PaginatedResponse<Equipement>>(`${this.apiUrl}?page=${page}&size=${size}`);
+  getEquipements(): Observable<Equipement[]> {
+    return this.http.get<Equipement[]>(this.apiUrl);
+  }
+
+  getAllEquipements(page: number, size: number): Observable<PaginatedResponseEquipement<Equipement>> {
+    return this.http.get<PaginatedResponseEquipement<Equipement>>(`${this.apiUrl}page?page=${page}&size=${size}`);
   }
   
   

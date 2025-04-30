@@ -1,4 +1,4 @@
-export interface PaginatedResponse<Equipement> {
+export interface PaginatedResponseEquipement<Equipement> {
     content: Equipement[];
     totalPages: number;
     totalElements: number;

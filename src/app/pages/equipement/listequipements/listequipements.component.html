@@ -8,7 +8,7 @@
                 <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
               </svg>
             </div>
-            <input type="text" (input)="search()" [(ngModel)]="inputSearch" id="table-search" class="outline-none block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50" placeholder="Chercher Equipement">
+            <input type="text" (input)="search()" [(ngModel)]="inputSearch" id="table-search" class="cursor-pointer outline-none block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50" placeholder="Chercher Equipement">
           </div>
         </div>
   
@@ -29,7 +29,7 @@
             <th class="px-4 py-2">Transport (j)</th>
             <th class="px-4 py-2">Installation (j)</th>
             <th class="px-4 py-2">Fournisseur</th>
-            <th class="px-4 py-2">Prix Total</th>
+            <th class="px-4 py-2">% Augmentation par ans</th>
             <th class="px-4 py-2">Type CAPEX</th>
             <th class="px-4 py-2">Action</th>
           </tr>
@@ -61,7 +61,7 @@
               {{ equipement.supplier }}
             </td>
             <td class="px-4 py-2">
-              {{ equipement.price | number: '1.2-2' }} €
+              {{ equipement.price | number: '1.2-2' }} %
             </td>
             <td class="px-4 py-2">
               {{ equipement.capexType }}
@@ -70,7 +70,7 @@
               <button  class="text-blue-500 hover:text-blue-700">
                 ✏️
               </button>
-              <button (click)="delEquipements(equipement.id)" class="text-red-500 hover:text-red-700">
+              <button (click)="delEquipement(equipement.id)" class="text-red-500 hover:text-red-700">
                 🗑️
               </button>
             </td>
@@ -81,13 +81,13 @@
       
   
       <div class="flex gap-3 justify-center">
-        <button class="border-1 border-gray-200 rounded-md shadow px-2 py-1 font-medium hover:text-white hover:bg-black transition">
+        <button class=" cursor-pointer border-1 border-gray-200 rounded-md shadow px-2 py-1 font-medium hover:text-white hover:bg-black transition">
           Précédent
         </button>
-        <button class="border-1 border-gray-200 rounded-md shadow px-4 py-1 font-medium hover:text-white hover:bg-black transition">
+        <button class=" cursor-pointer border-1 border-gray-200 rounded-md shadow px-4 py-1 font-medium hover:text-white hover:bg-black transition">
           1
         </button>
-        <button class="border-1 border-gray-200 rounded-md shadow px-2 py-1 font-medium hover:text-white hover:bg-black transition">
+        <button class=" cursor-pointer border-1 border-gray-200 rounded-md shadow px-2 py-1 font-medium hover:text-white hover:bg-black transition">
           Suivant
         </button>
       </div>

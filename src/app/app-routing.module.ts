@@ -10,6 +10,8 @@ const routes: Routes = [
       
       { path: "", component: DashboardComponent },
       {path:'equipements',loadChildren : ()=>import('./pages/equipement/equipement.module').then(m =>m.EquipementModule) },
+      {path:'projets',loadChildren : ()=>import('./pages/projet/projet.module').then(m =>m.ProjetModule) },
+      {path:'plans',loadChildren : ()=>import('./pages/plan/plan.module').then(m =>m.PlanModule) }
     ]
     
   }

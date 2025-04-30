@@ -1,0 +1,121 @@
+<div class="fixed inset-0 bg-black/80 flex items-center justify-center z-50" *ngIf="IsOpen && Projet">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl p-8">
+    <!-- Header -->
+    <div class="flex justify-between items-center border-b pb-4 mb-6">
+      <h2 class="text-2xl font-bold text-blue-800">{{ TitleModal }}</h2>
+      <button (click)="close()" class="text-gray-500 hover:text-red-600 text-2xl cursor-pointer">&times;</button>
+    </div>
+
+   
+    <form (ngSubmit)="submit()" class="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-y-auto max-h-[60vh]">
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">Nom</label>
+        <input type="text" [(ngModel)]="Projet!.name" name="name" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 bg-white text-sm cursor-pointer"
+          placeholder="Nom du projet" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">Client</label>
+        <input type="text" [(ngModel)]="Projet!.customer" name="customer" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 bg-white text-sm cursor-pointer"
+          placeholder="Client" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">Dérivatif</label>
+        <input type="text" [(ngModel)]="Projet!.deravative" name="deravative" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 bg-white text-sm cursor-pointer"
+          placeholder="Dérivatif" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">Quantité maximale</label>
+        <input type="number" [(ngModel)]="Projet!.maxQuantite" name="maxQuantite" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 bg-white text-sm cursor-pointer"
+          placeholder="Quantité maximale" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">A_samples</label>
+        <input type="date" [(ngModel)]="Projet!.a_samples" name="a_samples" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 text-sm cursor-pointer" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">B_samples</label>
+        <input type="date" [(ngModel)]="Projet!.b_samples" name="b_samples" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 text-sm cursor-pointer" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">C_samples</label>
+        <input type="date" [(ngModel)]="Projet!.c_samples" name="c_samples" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 text-sm cursor-pointer" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">D_samples</label>
+        <input type="date" [(ngModel)]="Projet!.d_samples" name="d_samples" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 text-sm cursor-pointer" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">SOP</label>
+        <input type="date" [(ngModel)]="Projet!.sop" name="sop" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 text-sm cursor-pointer" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">SOP_1</label>
+        <input type="date" [(ngModel)]="Projet!.sop_1" name="sop_1" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 text-sm cursor-pointer" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">Responsable</label>
+        <input type="text" [(ngModel)]="Projet!.responsable" name="responsable" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 bg-white text-sm cursor-pointer"
+          placeholder="Responsable" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">Statut</label>
+        <select [(ngModel)]="Projet!.status" name="status" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 text-sm cursor-pointer">
+          <option value="" disabled>Sélectionner un statut</option>
+          <option value="DRAFT">Draft</option>
+          <option value="APPROUVED">Approuvé</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">Somme prévisionnelle</label>
+        <input type="number" [(ngModel)]="Projet!.sommePrevisionnel" name="sommePrevisionnel" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 bg-white text-sm cursor-pointer"
+          placeholder="Somme prévisionnelle" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">Somme réelle</label>
+        <input type="number" [(ngModel)]="Projet!.sommeReel" name="sommeReel" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 bg-white text-sm cursor-pointer"
+          placeholder="Somme réelle" />
+      </div>
+
+    </form>
+
+    <!-- Buttons -->
+    <div class="flex justify-end mt-8 border-t pt-4 gap-3">
+      <button type="button" (click)="close()"
+        class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-2 rounded-lg text-sm font-medium cursor-pointer">
+        Annuler
+      </button>
+      <button type="submit"
+        class="bg-blue-800 hover:bg-blue-900 text-white px-6 py-2 rounded-lg text-sm font-semibold cursor-pointer">
+        Enregistrer
+      </button>
+    </div>
+  </div>
+</div>

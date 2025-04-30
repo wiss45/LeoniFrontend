@@ -18,7 +18,7 @@ export class ListequipementsComponent {
   page : number = 1
   size : number = 10
   equipements: Equipement[] = [];
-
+  totalpages:  number = 0
   constructor(private equipementService: EquipementService) {}
 
   ngOnInit(): void {
@@ -30,6 +30,7 @@ export class ListequipementsComponent {
       next: (data) => {
         this.equipements=data.content
         this.filtredList = data.content
+        this.totalpages=data.totalPages
       },
       error: (error) => {
         console.error('Erreur lors du chargement des équipements', error);
@@ -37,7 +38,7 @@ export class ListequipementsComponent {
     });
   }
 
-  delEquipements(id:number) : void {
+  delEquipement(id:number) : void {
     if(confirm("Are you Sure?")){
       this.equipementService.deleteEquipement(id).subscribe({
         next : (response) => {
@@ -80,11 +81,10 @@ export class ListequipementsComponent {
        next : (response) => {
         this.loadEquipements()
         this.closeModal()
-        console.log(response)
        } ,
-       error : (err) => {
+       error : (err) => 
         console.error("Erreur lors de l'ajout d'équipement",err)
-       }
+       
       })
     }
 

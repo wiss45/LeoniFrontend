@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { MainlayoutComponent } from './layout/mainlayout/mainlayout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { EquipementModule } from './pages/equipement/equipement.module';
+import { ProjetModule } from './pages/projet/projet.module';
+import { PlanModule } from './pages/plan/plan.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { EquipementModule } from './pages/equipement/equipement.module';
     AppRoutingModule,
     LucideAngularModule.pick({ LayoutDashboard, Server, Briefcase, FileText }),
     EquipementModule,
+    ProjetModule,
+    PlanModule,
   
   ],
   providers: [

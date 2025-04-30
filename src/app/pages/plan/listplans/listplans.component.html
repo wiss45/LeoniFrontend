@@ -1,0 +1,139 @@
+<div>
+  <div class="relative overflow-x-auto shadow-md hover:shadow-lg sm:rounded-lg grid gap-8 p-4 w-full pb-20">
+    <div class="flex justify-between border-b-1 border-gray-200 gap-4">
+      <div class="flex flex-col sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between">
+        <div class="relative mb-4">
+          <div class="absolute inset-y-0 left-0 flex items-center ps-3 pointer-events-none">
+            <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <input type="text" (input)="search()" [(ngModel)]="inputSearch" id="table-search"
+            class="outline-none cursor-pointer block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50"
+            placeholder="Chercher Par Nom Projet">
+        </div>
+      </div>
+
+      <div class="flex gap-4">
+        <button (click)="openModalAjout(plan!)" class="cursor-pointer bg-black rounded-md hover:opacity-90 py-2 px-4 text-white font-medium text-sm mb-4">
+          Nouveau Plan
+        </button>
+      </div>
+    </div>
+
+    <table id="plan-list" class="w-full text-xs text-left text-gray-500 mb-10">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+        <tr>
+          <th class="px-4 py-2 no-print">PAM</th>
+          <th class="px-4 py-2 no-print">Projet</th>
+          <th class="px-4 py-2 no-print">Prix</th>
+          <th class="px-4 py-2 no-print">Quantité</th>
+          <th class="px-4 py-2 no-print">Commande</th>
+          <th class="px-4 py-2 no-print">Cible</th>
+          <th class="px-4 py-2 no-print">Livraison</th>
+          <th class="px-4 py-2 no-print">RPR</th>
+          <th class="px-4 py-2 no-print">Action</th>
+          <th class="px-4 py-2 no-print">Détails</th> <!-- New column for details -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="bg-white border-b hover:bg-gray-50" *ngFor="let plan of filtredList">
+          <td class="px-4 py-2 text-gray-900 whitespace-nowrap">
+            {{ plan.pamNumber }}
+          </td>
+          <td class="px-4 py-2">
+            {{ plan.projet.name }}
+          </td>
+          <td class="px-4 py-2">
+            {{ plan.orderPrice | number: '1.2-2' }} €
+          </td>
+          <td class="px-4 py-2">
+            {{ plan.quantite }}
+          </td>
+          <td class="px-4 py-2">
+            {{ plan.orderNumber }}
+          </td>
+          <td class="px-4 py-2">
+            {{ plan.targetDate | date:'dd/MM/yyyy' }}
+          </td>
+          <td class="px-4 py-2">
+            {{ plan.deliveryDate | date:'dd/MM/yyyy' }}
+          </td>
+          <td class="px-4 py-2">
+            {{ plan.rprdate | date:'dd/MM/yyyy' }}
+          </td>
+          <td class="px-4 py-2 flex gap-3 no-print">
+            <button (click)="openModalAjout(plan)" class="text-blue-500 hover:text-blue-700 no-print">✏️</button>
+            <button (click)="delPlan(plan.id)" class="text-red-500 hover:text-red-700 no-print">🗑️</button>
+          </td>
+          <td class="px-4 py-2 no-print">
+            <button (click)="toggleEquipementDetails(plan.id)" class="text-blue-500 hover:text-blue-700 no-print">
+              Détails
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Button for printing the plan list -->
+    <div class="flex gap-3 justify-center no-print">
+      <button (click)="printPlanList()" 
+        class="cursor-pointer bg-black rounded-md hover:opacity-90 py-2 px-4 text-white font-medium text-sm mb-4">
+        Imprimer Liste des Plans
+      </button>
+    </div>
+
+    <div class="flex gap-3 justify-center no-print">
+      <button 
+        class="border-1 cursor-pointer border-gray-200 rounded-md shadow px-2 py-1 font-medium hover:text-white hover:bg-black transition">
+        Précédent
+      </button>
+      <button class="border-1 cursor-pointer border-gray-200 rounded-md shadow px-4 py-1 font-medium hover:text-white hover:bg-black transition">
+        {{ page }}
+      </button>
+      <button 
+        class="border-1 cursor-pointer border-gray-200 rounded-md shadow px-2 py-1 font-medium hover:text-white hover:bg-black transition">
+        Suivant
+      </button>
+    </div>
+  </div>
+
+  <app-addplan
+    [IsOpen]="isOpen"
+    [Plan]="plan"
+    [TitleModal]="'Ajout Plan'"
+    (CloseModal)="closeModal()"
+    (savePlan)="add(plan!)"
+  >
+  </app-addplan>
+
+  <!-- Modal for showing equipments of the selected plan -->
+  <div *ngIf="showEquipementDetails" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50" id="modal-content">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl p-8">
+      <div class="flex justify-between items-center border-b pb-4 mb-6">
+        <h2 class="text-2xl font-bold text-blue-800 no-print">Équipements</h2>
+        <button (click)="closeEquipementDetails()" class="text-gray-500 no-print hover:text-red-600 text-2xl cursor-pointer">&times;</button>
+      </div>
+      <div class="space-y-4">
+        <div *ngFor="let equipement of selectedPlanEquipements">
+          <ul class="list-disc pl-5">
+            <li><a class="font-medium">{{ equipement.name }}</a></li>
+          </ul>
+        </div>
+        
+      </div>
+      <div class="flex justify-end mt-8 border-t pt-4 gap-3">
+        <button type="button" (click)="printModalContent()"
+          class="bg-black/90 no-print hover:bg-black text-white px-5 py-2 rounded-lg text-sm font-medium cursor-pointer">
+          Imprimer Equipements
+        </button>
+        <button type="button" (click)="closeEquipementDetails()"
+          class="bg-gray-200 no-print hover:bg-gray-300 text-gray-800 px-5 py-2 rounded-lg text-sm font-medium cursor-pointer">
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

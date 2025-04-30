@@ -1,0 +1,89 @@
+<div class="fixed inset-0 bg-black/70 flex items-center justify-center z-50" *ngIf="IsOpen && Plan">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl p-8">
+    <!-- Header -->
+    <div class="flex justify-between items-center border-b pb-4 mb-6">
+      <h2 class="text-2xl font-bold text-blue-800">{{ TitleModal }}</h2>
+      <button (click)="close()" class="text-gray-500 hover:text-red-600 text-2xl cursor-pointer">&times;</button>
+    </div>
+
+    <!-- Form with scroll if needed -->
+    <form (ngSubmit)="submit()" class="grid grid-cols-1 md:grid-cols-2 gap-6 max-h-[60vh] overflow-y-auto">
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">Projet</label>
+        <select [(ngModel)]="Plan!.projet" name="projet"
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 bg-gray-50 text-sm cursor-pointer">
+          <option value="" disabled>Sélectionner un Projet</option>
+          <option *ngFor="let projet of projets" [ngValue]="projet">{{ projet.name }}</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">Équipement</label>
+        <select [(ngModel)]="Plan!.equipements" name="equipements"
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 bg-gray-50 text-sm cursor-pointer">
+          <option value="" disabled>Sélectionner un Équipement</option>
+          <option *ngFor="let equipement of equipements" [ngValue]="equipement">{{ equipement.name }}</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">Numéro d'ordre</label>
+        <input type="text" [(ngModel)]="Plan!.orderNumber" name="orderNumber" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 bg-white text-sm cursor-pointer"
+          placeholder="Numéro d'ordre" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">Prix de commande</label>
+        <input type="text" [(ngModel)]="Plan!.orderPrice" name="orderPrice" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 bg-white text-sm cursor-pointer"
+          placeholder="Prix" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">Numéro PAM</label>
+        <input type="text" [(ngModel)]="Plan!.pamNumber" name="pamNumber" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 bg-white text-sm cursor-pointer"
+          placeholder="Numéro PAM" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">Quantité</label>
+        <input type="number" [(ngModel)]="Plan!.quantite" name="quantite" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 bg-white text-sm cursor-pointer"
+          placeholder="Quantité" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">Date cible</label>
+        <input type="date" [(ngModel)]="Plan!.targetDate" name="targetDate" required
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 text-sm cursor-pointer" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">Date de livraison</label>
+        <input type="date" [(ngModel)]="Plan!.deliveryDate" name="deliveryDate"
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 text-sm cursor-pointer" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 font-medium">Date RPR</label>
+        <input type="date" [(ngModel)]="Plan!.rprdate" name="rprdate"
+          class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 text-sm cursor-pointer" />
+      </div>
+    </form>
+
+    <!-- Buttons -->
+    <div class="flex justify-end mt-8 border-t pt-4 gap-3">
+      <button type="button" (click)="close()"
+        class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-2 rounded-lg text-sm font-medium cursor-pointer">
+        Annuler
+      </button>
+      <button type="submit"
+        class="bg-blue-800 hover:bg-blue-900 text-white px-6 py-2 rounded-lg text-sm font-semibold cursor-pointer">
+        Enregistrer
+      </button>
+    </div>
+  </div>
+</div>

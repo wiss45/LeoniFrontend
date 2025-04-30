@@ -1,0 +1,116 @@
+<div>
+    <div class="relative overflow-x-auto shadow-md hover:shadow-lg sm:rounded-lg grid gap-8 p-4 w-full pb-20">
+      <div class="flex justify-between border-b-1 border-gray-200 gap-4">
+        <div class="flex flex-col sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between">
+          <div class="relative mb-4">
+            <div class="absolute inset-y-0 left-0 flex items-center ps-3 pointer-events-none">
+              <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <input type="text" (input)="search()" [(ngModel)]="inputSearch" id="table-search" class=" cursor-pointer outline-none block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50" placeholder="Chercher Projet">
+          </div>
+        </div>
+  
+        <div class="flex gap-4">
+          <button (click)="openModalAjout(projet!)" class="cursor-pointer bg-black rounded-md hover:opacity-90 py-2 px-4 text-white font-medium text-sm mb-4">Nouveau Projet</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div *ngFor="let projet of filtredlist"
+             class="relative p-6 bg-white rounded-2xl border border-gray-200 shadow-md hover:shadow-xl transition duration-300 group">
+      
+          
+          <button (click)="delProjet(projet.id)"
+                  class="absolute top-3 right-3 text-gray-400 hover:text-red-600 text-xl font-bold transition-transform hover:scale-110"
+                  title="Supprimer ce projet">
+            ×
+          </button>
+      
+          <!-- En-tête avec nom du projet -->
+          <div class="mb-3">
+            <h2 class="text-xl font-semibold text-blue-900 truncate">
+              {{ projet.name }}
+            </h2>
+          </div>
+      
+          <!-- Infos principales -->
+          <div class="text-sm text-gray-600 space-y-1 mb-4">
+            <p><span class="font-medium text-gray-800">Client :</span> {{ projet.customer }}</p>
+            <p><span class="font-medium text-gray-800">Responsable :</span> {{ projet.responsable }}</p>
+            <p><span class="font-medium text-gray-800">Dérivatif :</span> {{ projet.deravative }}</p>
+            <p><span class="font-medium text-gray-800">Quantité Max :</span> {{ projet.maxQuantite }}</p>
+      
+            <!-- Statut -->
+            <div class="mt-2">
+              <p class="text-sm text-gray-800 font-medium mb-1">Statut :</p>
+              <span class="px-2 py-1 text-xs font-medium rounded-full uppercase tracking-wide"
+                    [ngClass]="{
+                      
+                      'bg-amber-100 text-amber-800': projet.status === 'DRAFT',
+                      'bg-green-100 text-green-800': projet.status === 'APPROUVED'
+                    }">
+                {{ projet.status }}
+              </span>
+            </div>
+          </div>
+      
+          <!-- Bloc chiffres -->
+          <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+            <div>
+              <p class="text-gray-500">Prévisionnel (€)</p>
+              <p class="font-semibold text-gray-800">{{ projet.sommePrevisionnel | number:'1.2-2' }}</p>
+            </div>
+            <div>
+              <p class="text-gray-500">Réel (€)</p>
+              <p class="font-semibold text-gray-800">{{ projet.sommeReel | number:'1.2-2' }}</p>
+            </div>
+            <div class="col-span-2">
+              <p class="text-gray-500">Écart (€)</p>
+              <p class="font-semibold"
+                 [ngClass]="{
+                   'text-green-600': projet.sommeReel <= projet.sommePrevisionnel,
+                   'text-red-600': projet.sommeReel > projet.sommePrevisionnel
+                 }">
+                {{ (projet.sommeReel - projet.sommePrevisionnel) | number:'1.2-2' }}
+              </p>
+            </div>
+          </div>
+      
+          <!-- Action -->
+          <div class="flex justify-end gap-2">
+            <button class="text-sm cursor-pointer text-white bg-green-600 px-4 rounded py-1 hover:bg-green-700 font-medium transition flex items-center gap-1">
+               Modifier
+            </button>
+            
+          </div>
+        </div>
+      </div>
+      
+      <!-- Pagination en bas -->
+      <div class="flex gap-3 justify-center mt-4">
+        <button class="border cursor-pointer border-gray-200 rounded-md shadow px-3 py-1 font-medium hover:text-white hover:bg-black transition">
+          Précédent
+        </button>
+        <button class="border cursor-pointer border-gray-200 rounded-md shadow px-4 py-1 font-medium hover:text-white hover:bg-black transition">
+          1
+        </button>
+        <button class="border cursor-pointer border-gray-200 rounded-md shadow px-3 py-1 font-medium hover:text-white hover:bg-black transition">
+          Suivant
+        </button>
+      </div>
+      
+  
+    <app-addprojet
+      [IsOpen]="isOpen"
+      [Projet]="projet"
+      [TitleModal]="'Ajout Projet'"
+      (CloseModal)="closeModal()"
+      (saveProjet)="add(projet!)"
+    >
+    </app-addprojet>
+
+     
+  </div>
+  
