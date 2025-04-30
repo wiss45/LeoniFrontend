@@ -26,8 +26,8 @@
     <table id="plan-list" class="w-full text-xs text-left text-gray-500 mb-10">
       <thead class="text-xs text-gray-700 uppercase bg-gray-50">
         <tr>
-          <th class="px-4 py-2 no-print">PAM</th>
           <th class="px-4 py-2 no-print">Projet</th>
+          <th class="px-4 py-2 no-print">PAM</th>
           <th class="px-4 py-2 no-print">Prix</th>
           <th class="px-4 py-2 no-print">Quantité</th>
           <th class="px-4 py-2 no-print">Commande</th>
@@ -40,11 +40,11 @@
       </thead>
       <tbody>
         <tr class="bg-white border-b hover:bg-gray-50" *ngFor="let plan of filtredList">
-          <td class="px-4 py-2 text-gray-900 whitespace-nowrap">
-            {{ plan.pamNumber }}
-          </td>
-          <td class="px-4 py-2">
+          <td class="px-4 py-2 text-gray-900 whitespace-nowrap uppercase">
             {{ plan.projet.name }}
+          </td>
+          <td class="px-4 py-2 ">
+            {{ plan.pamNumber }}
           </td>
           <td class="px-4 py-2">
             {{ plan.orderPrice | number: '1.2-2' }} €
@@ -69,8 +69,8 @@
             <button (click)="delPlan(plan.id)" class="text-red-500 hover:text-red-700 no-print">🗑️</button>
           </td>
           <td class="px-4 py-2 no-print">
-            <button (click)="toggleEquipementDetails(plan.id)" class="text-blue-500 hover:text-blue-700 no-print">
-              Détails
+            <button (click)="toggleEquipementDetails(plan.id)" class=" font-medium bg-blue-600 text-white hover:bg-blue-700 rounded px-2 py-1 no-print">
+             Equipements
             </button>
           </td>
         </tr>
