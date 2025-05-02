@@ -1,23 +1,145 @@
-<div class="p-8 space-y-8 bg-gray-100">
+<div class="p-6 bg-gray-50 min-h-screen">
 
-    <!-- Titre -->
-    <h1 class="text-4xl font-semibold text-center text-blue-600 mb-8">Statistiques Globaux</h1>
-  
-    <!-- Section des Statistiques -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8">
-      
-      <!-- Carte des Projets -->
-      <div *ngFor="let stat of stats" class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center justify-center space-y-4">
-        <!-- Cercle de Statistique -->
-        <div class="w-24 h-24 rounded-full {{ stat.color }} text-white flex items-center justify-center text-3xl font-semibold">
-          {{ stat.value }}
-        </div>
-        <p class="text-xl text-center font-medium text-gray-700">{{ stat.label }}</p>
-        <div class="w-full h-1 bg-gray-200"></div>
-        <p class="text-lg text-center text-gray-500">Total</p>
-      </div>
-  
+  <!-- En-tête avec logo -->
+  <div class="flex items-center justify-between mb-8">
+    <div class="flex items-center space-x-4">
+      <img src="https://media.licdn.com/dms/image/v2/D4D0BAQGrUPpxkBBK8A/company-logo_200_200/company-logo_200_200/0/1731596249075/leoni_tunisia_logo?e=2147483647&v=beta&t=TxQmdbr0xoKdH2I_C666t67tIb4Gspur3lstlnuF8Bg" alt="Leoni Tunisie" class="h-12">
+      <h1 class="text-3xl font-bold text-blue-900">Tableau de Bord</h1>
     </div>
-  
+    <div class="text-sm text-gray-600">
+      Mis à jour: {{ currentDate | date:'medium' }}
+    </div>
   </div>
-  
+
+  <!-- Statistiques Principales -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    
+    <!-- Carte Projets -->
+    <div *ngFor="let stat of stats" 
+         class="bg-white rounded-xl shadow-md overflow-hidden border-l-4 {{ stat.borderColor }}">
+      <div class="p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-lg font-medium text-gray-500">{{ stat.label }}</p>
+            <p class="text-3xl font-bold text-gray-800 mt-2">{{ stat.value }}</p>
+          </div>
+          <div class="p-3 rounded-full {{ stat.bgColor }} bg-opacity-20">
+            <svg class="w-8 h-8 {{ stat.iconColor }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"  [attr.d]="stat.iconPath"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="mt-4 flex items-center text-sm {{ stat.textColor }}">
+          <span [ngClass]="stat.trend === 'up' ? 'text-green-500' : 'text-red-500'">
+            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              [attr.d]="stat.trend === 'up' ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7'"></path>
+            </svg>
+            {{ stat.change }}% vs mois dernier
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Graphiques et Données -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    
+    <!-- Graphique Principal -->
+    <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-2 border border-gray-100">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold text-blue-900">Activité Mensuelle</h2>
+        <select class="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option>12 derniers mois</option>
+          <option>6 derniers mois</option>
+          <option>3 derniers mois</option>
+        </select>
+      </div>
+      <div class="h-80">
+        <!-- Intégrez votre composant de graphique ici -->
+        <canvas id="activityChart"></canvas>
+      </div>
+    </div>
+    
+    <!-- Dernières Activités -->
+    <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+      <h2 class="text-xl font-semibold text-blue-900 mb-4">Dernières Activités</h2>
+      <div class="space-y-4">
+        <div *ngFor="let activity of recentActivities" class="flex items-start space-x-3">
+          <div class="flex-shrink-0 mt-1">
+            <div class="h-8 w-8 rounded-full {{ activity.bgColor }} flex items-center justify-center">
+              <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"  [attr.d]="activity.iconPath"></path>
+              </svg>
+            </div>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-gray-800">{{ activity.title }}</p>
+            <p class="text-xs text-gray-500">{{ activity.time }} · {{ activity.user }}</p>
+          </div>
+        </div>
+      </div>
+      <button class="mt-4 w-full py-2 bg-blue-50 text-blue-700 rounded-md text-sm font-medium hover:bg-blue-100">
+        Voir toutes les activités
+      </button>
+    </div>
+  </div>
+
+  <!-- Tableau des Projets Récents -->
+  <div class="mt-8 bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+    <div class="px-6 py-4 border-b border-gray-200">
+      <h2 class="text-xl font-semibold text-blue-900">Projets Récents</h2>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Projet</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Responsable</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Avancement</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Livraison</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let project of recentProjects" class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10">
+                  <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                    <span class="text-blue-600 font-medium">{{ project.initials }}</span>
+                  </div>
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">{{ project.name }}</div>
+                  <div class="text-sm text-gray-500">{{ project.code }}</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">{{ project.manager }}</div>
+              <div class="text-sm text-gray-500">{{ project.department }}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                        {{ project.status === 'En cours' ? 'bg-blue-100 text-blue-800' : 
+                           project.status === 'Terminé' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                {{ project.status }}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-blue-600 h-2.5 rounded-full" [style.width.%]="project.progress"></div>
+              </div>
+              <div class="text-right text-xs text-gray-500 mt-1">{{ project.progress }}%</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              {{ project.deliveryDate | date:'shortDate' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

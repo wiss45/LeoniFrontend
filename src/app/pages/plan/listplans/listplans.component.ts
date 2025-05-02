@@ -19,6 +19,8 @@ export class ListplansComponent {
   size: number = 10;
   plans: Plan[] = [];
   totalpages: number = 0;
+  showEquipementDetails: boolean = false;
+  selectedPlanEquipements: Equipement[] = [];
 
   constructor(private planService: PlanService) {}
 
@@ -86,8 +88,7 @@ export class ListplansComponent {
     }
   }
 
-  showEquipementDetails: boolean = false;
-  selectedPlanEquipements: Equipement[] = [];
+
 
   toggleEquipementDetails(planId: number) {
     const plan = this.filtredList.find(p => p.id === planId);

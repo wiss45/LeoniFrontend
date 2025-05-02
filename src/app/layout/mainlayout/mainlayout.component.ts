@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 
 
 import { AuthentificationService } from '../../services/authentification.service';
+import { UserService } from '../../services/user.service';
 @Component({
   selector: 'app-mainlayout',
   standalone: false,
@@ -10,10 +11,14 @@ import { AuthentificationService } from '../../services/authentification.service
   styleUrls: ['./mainlayout.component.css'],
 })
 export class MainlayoutComponent {
+
   isOpenuser: boolean = false;
   isOpenHamburger: boolean = false;
   itemActive :  string = ''
   user = sessionStorage.getItem("username")
+  role = sessionStorage.getItem("role")
+
+  notificationNomber : number = 0
 
    sidebarItems = [
   { name: "Dashboard", link: "/users", icon: "layout-dashboard" },
@@ -23,8 +28,16 @@ export class MainlayoutComponent {
 ];
 
   
-  constructor( private serviceAuth : AuthentificationService){}
+  constructor( private serviceAuth : AuthentificationService , private serviceUser : UserService){}
 
+  ngOnInit(): void {
+    this.CountNotifications();
+    
+    // S'abonner aux mises à jour
+    this.serviceUser.notificationsUpdated$.subscribe(() => {
+      this.CountNotifications();
+    });
+  }
   
   activeItems(Componentname : string) {
     this.itemActive=Componentname ;
@@ -46,6 +59,19 @@ export class MainlayoutComponent {
 Logout () {
  this.serviceAuth.logout()
 }
+
+
+CountNotifications() : void {
+  this.serviceUser.countNotifications().subscribe({
+    next : (data) =>{
+      this.notificationNomber=data
+    },
+    error : (err) => console.error("Erreur de récupération de nombre des notifications",err)
+  })
+}
+
+
+
   
 }
 

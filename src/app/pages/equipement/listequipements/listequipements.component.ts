@@ -31,6 +31,7 @@ export class ListequipementsComponent {
         this.equipements=data.content
         this.filtredList = data.content
         this.totalpages=data.totalPages
+        console.log(data)
       },
       error: (error) => {
         console.error('Erreur lors du chargement des équipements', error);
