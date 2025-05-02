@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Projet } from '../../../interfaces/projet';
 import { ProjetService } from '../../../services/projet.service';
 import { Equipement } from '../../../interfaces/equipement';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-listprojets',
@@ -20,7 +21,7 @@ size: number = 10
 totalpages : number = 0
 projet : Projet | null = null
 
-constructor(private service:ProjetService){}
+constructor(private service:ProjetService,private router :Router){}
 
 
 ngOnInit() : void {

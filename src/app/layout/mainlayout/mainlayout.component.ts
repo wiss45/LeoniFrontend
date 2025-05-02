@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 
 
-import { Router } from '@angular/router';
+
+import { AuthentificationService } from '../../services/authentification.service';
 @Component({
   selector: 'app-mainlayout',
   standalone: false,
@@ -12,7 +13,7 @@ export class MainlayoutComponent {
   isOpenuser: boolean = false;
   isOpenHamburger: boolean = false;
   itemActive :  string = ''
-
+  user = sessionStorage.getItem("username")
 
    sidebarItems = [
   { name: "Dashboard", link: "/users", icon: "layout-dashboard" },
@@ -22,7 +23,7 @@ export class MainlayoutComponent {
 ];
 
   
-  constructor( private router : Router){}
+  constructor( private serviceAuth : AuthentificationService){}
 
   
   activeItems(Componentname : string) {
@@ -42,7 +43,9 @@ export class MainlayoutComponent {
 
     
   
-
+Logout () {
+ this.serviceAuth.logout()
+}
   
 }
 

@@ -1,0 +1,69 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
+    <div class="flex justify-center mb-6">
+      <img src="https://media.licdn.com/dms/image/v2/D4D0BAQGrUPpxkBBK8A/company-logo_200_200/company-logo_200_200/0/1731596249075/leoni_tunisia_logo?e=2147483647&v=beta&t=TxQmdbr0xoKdH2I_C666t67tIb4Gspur3lstlnuF8Bg" alt="Leoni" class="h-12">
+    </div>
+
+    <h2 class="text-2xl font-semibold text-center text-gray-700 mb-6">Créer un compte Leoni</h2>
+
+    <form [formGroup]="userfrom" (ngSubmit)="Register(userfrom.value)">
+      <!-- Username -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-600">Nom d'utilisateur</label>
+        <input formControlName="username" type="text" placeholder="Nom d'utilisateur"
+          class="mt-1 w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+        <div *ngIf="userfrom.get('username')?.invalid && userfrom.get('username')?.touched" class="text-red-600 text-sm">
+          Nom d'utilisateur requis (6 à 10 caractères).
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-600">Email</label>
+        <input formControlName="email" type="email" placeholder="Email professionnel"
+          class="mt-1 w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+        <div *ngIf="userfrom.get('email')?.invalid && userfrom.get('email')?.touched" class="text-red-600 text-sm">
+          Adresse email invalide.
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-600">Mot de passe</label>
+        <input formControlName="password" type="password" placeholder="Mot de passe"
+          class="mt-1 w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+        <div *ngIf="userfrom.get('password')?.invalid && userfrom.get('password')?.touched" class="text-red-600 text-sm">
+          Le mot de passe doit contenir entre 6 et 15 caractères.
+        </div>
+      </div>
+
+     <!-- Rôles -->
+     <div class="mb-6">
+      <label class="block text-sm font-medium text-gray-700 mb-2">Rôle(s)</label>
+      <div class="flex flex-wrap gap-4">
+        <div *ngFor="let role of Roles" class="flex items-center gap-2">
+          <input
+            type="checkbox"
+            (change)="onRoleChange(role.id, $event)"
+            [value]="role.id"
+            name="roles"
+            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-pointer"
+          />
+          <span class="text-sm text-gray-700">{{ role.name }}</span>
+        </div>
+      </div>
+    </div>
+
+      <!-- Submit Button -->
+      <button type="submit"
+        class="w-full bg-blue-800 text-white py-2 rounded-lg hover:bg-blue-900 transition duration-200" [disabled]="userfrom.invalid">
+        Créer un compte
+      </button>
+    </form>
+
+    <p class="text-center text-sm text-gray-500 mt-4">
+      Vous avez déjà un compte ?
+      <a href="" class="text-blue-600 hover:underline">Connectez-vous</a>
+    </p>
+  </div>
+</div>

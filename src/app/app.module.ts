@@ -8,6 +8,10 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { EquipementModule } from './pages/equipement/equipement.module';
 import { ProjetModule } from './pages/projet/projet.module';
 import { PlanModule } from './pages/plan/plan.module';
+import { UserModule } from './pages/user/user.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { TokenInterceptorsService } from './services/token-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -16,16 +20,22 @@ import { PlanModule } from './pages/plan/plan.module';
     DashboardComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule,  
+    BrowserAnimationsModule,
     AppRoutingModule,
     LucideAngularModule.pick({ LayoutDashboard, Server, Briefcase, FileText }),
     EquipementModule,
     ProjetModule,
     PlanModule,
-  
+    UserModule,
   ],
   providers: [
-    provideClientHydration(withEventReplay())
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorsService, 
+      multi: true
+    },
+   provideHttpClient(withInterceptorsFromDi())
   ],
   bootstrap: [AppComponent]
 })
