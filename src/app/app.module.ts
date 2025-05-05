@@ -13,6 +13,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TokenInterceptorsService } from './services/token-interceptor.service';
 import { NotificationModule } from './pages/notification/notification.module';
+import { ExcelModule } from './pages/excel/excel.module';
+
+
+
 
 @NgModule({
   declarations: [
@@ -30,6 +34,8 @@ import { NotificationModule } from './pages/notification/notification.module';
     PlanModule,
     UserModule,
     NotificationModule,
+    ExcelModule,
+ 
   ],
   providers: [
     {

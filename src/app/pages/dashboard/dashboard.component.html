@@ -15,13 +15,13 @@
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
     
     <!-- Carte Projets -->
-    <div *ngFor="let stat of stats" 
+    <div *ngFor="let stat of projetStat" 
          class="bg-white rounded-xl shadow-md overflow-hidden border-l-4 {{ stat.borderColor }}">
       <div class="p-6">
         <div class="flex items-center justify-between">
           <div>
             <p class="text-lg font-medium text-gray-500">{{ stat.label }}</p>
-            <p class="text-3xl font-bold text-gray-800 mt-2">{{ stat.value }}</p>
+            <p class="text-3xl font-bold text-gray-800 mt-2">{{nombreProjets}}</p>
           </div>
           <div class="p-3 rounded-full {{ stat.bgColor }} bg-opacity-20">
             <svg class="w-8 h-8 {{ stat.iconColor }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -29,18 +29,30 @@
             </svg>
           </div>
         </div>
-        <div class="mt-4 flex items-center text-sm {{ stat.textColor }}">
-          <span [ngClass]="stat.trend === 'up' ? 'text-green-500' : 'text-red-500'">
-            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-              [attr.d]="stat.trend === 'up' ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7'"></path>
-            </svg>
-            {{ stat.change }}% vs mois dernier
-          </span>
-        </div>
+       
       </div>
     </div>
-  </div>
+ 
+
+      <!-- Carte Projets -->
+      <div *ngFor="let stat of EquipementStat" 
+      class="bg-white rounded-xl shadow-md overflow-hidden border-l-4 {{ stat.borderColor }}">
+   <div class="p-6">
+     <div class="flex items-center justify-between">
+       <div>
+         <p class="text-lg font-medium text-gray-500">{{ stat.label }}</p>
+         <p class="text-3xl font-bold text-gray-800 mt-2">{{ nombreEquipements }}</p>
+       </div>
+       <div class="p-3 rounded-full {{ stat.bgColor }} bg-opacity-20">
+         <svg class="w-8 h-8 {{ stat.iconColor }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"  [attr.d]="stat.iconPath"></path>
+         </svg>
+       </div>
+     </div>
+    
+   </div>
+ </div>
+</div>
 
   <!-- Graphiques et Données -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">

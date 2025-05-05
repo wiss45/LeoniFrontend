@@ -13,7 +13,8 @@ const routes: Routes = [
       {path:'equipements',loadChildren : ()=>import('./pages/equipement/equipement.module').then(m =>m.EquipementModule),canActivate:[AuthGuardService] },
       {path:'projets',loadChildren : ()=>import('./pages/projet/projet.module').then(m =>m.ProjetModule),canActivate:[AuthGuardService] },
       {path:'plans',loadChildren : ()=>import('./pages/plan/plan.module').then(m =>m.PlanModule),canActivate:[AuthGuardService] },
-      {path:"notifications" , loadChildren : () => import('./pages/notification/notification.module').then(m=>m.NotificationModule),canActivate:[AuthGuardService]}
+      {path:"notifications" , loadChildren : () => import('./pages/notification/notification.module').then(m=>m.NotificationModule),canActivate:[AuthGuardService]},
+      {path:"importExcel" , loadChildren : () => import('./pages/excel/excel.module').then(m=>m.ExcelModule),canActivate:[AuthGuardService]},
     ]
     
   },

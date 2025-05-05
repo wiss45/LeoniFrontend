@@ -36,7 +36,7 @@ export class TokenInterceptorsService implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           console.log("Erreur 401 Unauthorized - Token invalide ou expiré");
-          // Redirection vers la page de login
+          
           this.router.navigate(['']);
         }
         return throwError(() => error);

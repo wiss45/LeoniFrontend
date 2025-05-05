@@ -40,4 +40,8 @@ export class ProjetService {
   deleteProjet(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  NombreProjets() : Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}nombreProjets`)
+   }
 }

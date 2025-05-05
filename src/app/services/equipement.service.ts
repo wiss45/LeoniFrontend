@@ -29,7 +29,9 @@ export class EquipementService {
   }
   
   
-
+ NombreEquipements() : Observable<number> {
+  return this.http.get<number>(`${this.apiUrl}nombreEquipements`)
+ }
 
   updateEquipement(id: number, equipement: Equipement): Observable<Equipement> {
     return this.http.put<Equipement>(`${this.apiUrl}${id}`, equipement);
@@ -42,3 +44,5 @@ export class EquipementService {
 
 
 }
+
+

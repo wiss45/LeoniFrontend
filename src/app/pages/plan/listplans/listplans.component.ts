@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { PlanService } from '../../../services/plan.service';
 import { Plan } from '../../../interfaces/plan';
 import { Equipement } from '../../../interfaces/equipement';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-listplans',
@@ -22,7 +23,7 @@ export class ListplansComponent {
   showEquipementDetails: boolean = false;
   selectedPlanEquipements: Equipement[] = [];
 
-  constructor(private planService: PlanService) {}
+  constructor(private planService: PlanService , private router : Router) {}
 
   ngOnInit(): void {
     this.loadPlans();
@@ -77,12 +78,14 @@ export class ListplansComponent {
   add(plan: Plan): void {
     if (plan) {
       this.planService.createPlan(plan).subscribe({
-        next: () => {
+        next: (response) => {
           this.loadPlans();
           this.closeModal();
+          console.log(response)
         },
         error: (err) => {
           console.error("Erreur lors de l'ajout du plan", err);
+          
         }
       });
     }

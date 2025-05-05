@@ -47,6 +47,8 @@ export class AddplanComponent {
     });
   }
 
+  
+
   close(): void {
     this.CloseModal.emit();
   }
