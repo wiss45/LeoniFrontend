@@ -1,65 +1,61 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { catchError, Observable, throwError } from 'rxjs';
+import { ImportResult } from '../interfaces/ImportResult';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExcelService {
 
-  private apiUrl = 'http://localhost:8084/home/api/import';
+  private apiUrl = 'http://localhost:8084/equipements/import';
 
   constructor(private http: HttpClient) {}
-
-  private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
-    console.log('Token being used:', token);
+/*
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token') || '';
     return new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`
+      // ⚠️ NE PAS ajouter 'Content-Type' ici pour les FormData
     });
   }
-
-  /**
-   * Import equipment data from Excel file
-   * @param file Excel file containing equipment data
-   * @param replaceExisting Flag to indicate if existing data should be replaced
-   * @returns Observable with import results
-   */
-  importEquipmentData(file: File, replaceExisting: boolean = true): Observable<any> {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('replaceExisting', replaceExisting.toString());
-
+  
+  importEquipment(formData: FormData) {
     return this.http.post(`${this.apiUrl}/equipment`, formData, {
-      headers: this.getHeaders()
+      headers: this.getAuthHeaders()
     });
   }
 
-  /**
-   * Validate Excel file before upload
-   * @param file Excel file to validate
-   * @returns Observable with validation result
-   */
   validateExcelFile(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
 
     return this.http.post(`${this.apiUrl}/validate`, formData, {
-      headers: this.getHeaders()
+      headers: this.getAuthHeaders()
     });
   }
 
-  /**
-   * Analyze Excel structure and detect column mapping
-   * @param file Excel file to analyze
-   * @returns Observable with analysis results
-   */
   analyzeExcelStructure(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
 
     return this.http.post(`${this.apiUrl}/analyze`, formData, {
-      headers: this.getHeaders()
+      headers: this.getAuthHeaders()
     });
-  }
+  }*/
+
+    
+    uploadFile(file: File) {
+      const formData = new FormData();
+      formData.append('file', file);
+    
+      return this.http.post<ImportResult>(this.apiUrl, formData);
+    }
+    
+    
+    
+    
+    
+    
+    
 }

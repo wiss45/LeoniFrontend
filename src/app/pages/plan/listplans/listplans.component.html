@@ -26,53 +26,29 @@
     <table id="plan-list" class="w-full text-xs text-left text-gray-500 mb-10">
       <thead class="text-xs text-gray-700 uppercase bg-gray-50">
         <tr>
+          <th class="px-4 py-2 no-print">N° Plan</th>
           <th class="px-4 py-2 no-print">Projet</th>
-          <th class="px-4 py-2 no-print">PAM</th>
-          <th class="px-4 py-2 no-print">Prix</th>
-          <th class="px-4 py-2 no-print">Quantité</th>
-          <th class="px-4 py-2 no-print">Commande</th>
-          <th class="px-4 py-2 no-print">Cible</th>
-          <th class="px-4 py-2 no-print">Livraison</th>
-          <th class="px-4 py-2 no-print">RPR</th>
+          <th class="px-4 py-2 no-print">Nombre Equipements</th>
           <th class="px-4 py-2 no-print">Action</th>
-          <th class="px-4 py-2 no-print">Détails</th> <!-- New column for details -->
+         
         </tr>
       </thead>
       <tbody>
         <tr class="bg-white border-b hover:bg-gray-50" *ngFor="let plan of filtredList">
           <td class="px-4 py-2 text-gray-900 whitespace-nowrap uppercase">
+            {{ plan.id}}
+          </td>
+          <td class="px-4 py-2 text-gray-900 whitespace-nowrap uppercase">
             {{ plan.projet.name }}
           </td>
-          <td class="px-4 py-2 ">
-            {{ plan.pamNumber }}
+          <td  class="px-4 py-2 text-gray-900 whitespace-nowrap uppercase">
+            1
           </td>
-          <td class="px-4 py-2">
-            {{ plan.orderPrice | number: '1.2-2' }} €
-          </td>
-          <td class="px-4 py-2">
-            {{ plan.quantite }}
-          </td>
-          <td class="px-4 py-2">
-            {{ plan.orderNumber }}
-          </td>
-          <td class="px-4 py-2">
-            {{ plan.targetDate | date:'dd/MM/yyyy' }}
-          </td>
-          <td class="px-4 py-2">
-            {{ plan.deliveryDate | date:'dd/MM/yyyy' }}
-          </td>
-          <td class="px-4 py-2">
-            {{ plan.rprdate | date:'dd/MM/yyyy' }}
-          </td>
+         
           <td class="px-4 py-2 flex gap-3 no-print">
-            <button (click)="openModalAjout(plan)" class="text-blue-500 hover:text-blue-700 no-print">✏️</button>
-            <button (click)="delPlan(plan.id)" class="text-red-500 hover:text-red-700 no-print">🗑️</button>
+            <button (click)="delPlan(plan.id)" class="text-red-500 hover:text-red-700 no-print ml-4">🗑️</button>
           </td>
-          <td class="px-4 py-2 no-print">
-            <button (click)="toggleEquipementDetails(plan.id)" class=" font-medium bg-blue-600 text-white hover:bg-blue-700 rounded px-2 py-1 no-print">
-             Equipements
-            </button>
-          </td>
+        
         </tr>
       </tbody>
     </table>
@@ -109,31 +85,6 @@
   >
   </app-addplan>
 
-  <!-- Modal for showing equipments of the selected plan -->
-  <div *ngIf="showEquipementDetails" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50" id="modal-content">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl p-8">
-      <div class="flex justify-between items-center border-b pb-4 mb-6">
-        <h2 class="text-2xl font-bold text-blue-800 no-print">Équipements</h2>
-        <button (click)="closeEquipementDetails()" class="text-gray-500 no-print hover:text-red-600 text-2xl cursor-pointer">&times;</button>
-      </div>
-      <div class="space-y-4">
-        <div *ngFor="let equipement of selectedPlanEquipements">
-          <ul class="list-disc pl-5">
-            <li><a class="font-medium">{{ equipement.name }}</a></li>
-          </ul>
-        </div>
-        
-      </div>
-      <div class="flex justify-end mt-8 border-t pt-4 gap-3">
-        <button type="button" (click)="printModalContent()"
-          class="bg-black/90 no-print hover:bg-black text-white px-5 py-2 rounded-lg text-sm font-medium cursor-pointer">
-          Imprimer Equipements
-        </button>
-        <button type="button" (click)="closeEquipementDetails()"
-          class="bg-gray-200 no-print hover:bg-gray-300 text-gray-800 px-5 py-2 rounded-lg text-sm font-medium cursor-pointer">
-          Fermer
-        </button>
-      </div>
-    </div>
-  </div>
+  
+  
 </div>

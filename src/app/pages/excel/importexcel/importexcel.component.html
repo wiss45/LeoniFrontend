@@ -1,193 +1,61 @@
-<div class="import-container leoni-theme">
-  <mat-card class="leoni-card">
-    <mat-card-header class="leoni-header">
-      <div class="header-content">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH6jQbkAsSUgXIch5K_oPxRaLEPWzDbk42zQ&s" alt="Leoni Logo" class="logo">
-        <div>
-          <mat-card-title class="leoni-title">Import Equipment Data</mat-card-title>
-          <mat-card-subtitle class="leoni-subtitle">Upload an Excel file with equipment pricing data</mat-card-subtitle>
-        </div>
+<div class="max-w-4xl mx-auto p-4 space-y-6 font-sans">
+  <!-- File Upload Box -->
+  <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
+    <div class="text-center mb-6">
+      <div class="mx-auto w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
       </div>
-    </mat-card-header>
+      <h3 class="text-xl font-semibold text-gray-800">Importation de fichiers Excel</h3>
+      <p class="text-gray-500 mt-1">Sélectionnez votre fichier .xlsx ou .xls</p>
+    </div>
 
-    <mat-card-content class="leoni-content">
-      <!-- File Upload Section -->
-      <div class="file-upload-section leoni-upload-area">
-        <div class="upload-container">
-          <button 
-            mat-raised-button 
-            class="leoni-upload-btn"
-            (click)="fileInput.click()"
-            [disabled]="isUploading || isAnalyzing">
-            <mat-icon>cloud_upload</mat-icon>
-            Select Excel File
-          </button>
-          <input 
-            hidden 
-            #fileInput 
-            type="file" 
-            accept=".xlsx, .xls" 
-            (change)="onFileSelected($event)"
-            [disabled]="isUploading || isAnalyzing">
-          
-          <div class="file-info">
-            <span class="file-name" *ngIf="fileName">
-              <mat-icon>description</mat-icon>
-              {{ fileName }}
-            </span>
-            
-            <div class="file-status-container" *ngIf="selectedFile">
-              <mat-spinner *ngIf="isAnalyzing" diameter="20"></mat-spinner>
-              <mat-icon *ngIf="isValidFile && !isAnalyzing" color="primary">check_circle</mat-icon>
-              <mat-icon *ngIf="!isValidFile && !isAnalyzing" color="warn">error</mat-icon>
-              <span *ngIf="isAnalyzing" class="status-text">Analyzing file...</span>
-              <span *ngIf="isValidFile && !isAnalyzing" class="status-text valid">Valid file structure</span>
-              <span *ngIf="!isValidFile && !isAnalyzing && error" class="status-text error">{{ error }}</span>
-            </div>
-          </div>
-        </div>
+    <label class="flex flex-col items-center px-4 py-6 bg-blue-50 rounded-lg border-2 border-dashed border-blue-100 cursor-pointer hover:bg-blue-100 transition-colors duration-200">
+      <input type="file" (change)="onFileChange($event)" accept=".xlsx, .xls" class="hidden" />
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+      </svg>
+      <span class="mt-2 text-blue-600 font-medium">Parcourir les fichiers</span>
+      <span class="text-xs text-gray-500 mt-1">Glissez-déposez ou cliquez pour sélectionner</span>
+    </label>
+
+    <div *ngIf="selectedFile" class="mt-4 p-3 bg-gray-50 rounded-md border border-gray-200 flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span class="text-gray-700 truncate flex-1">Fichier sélectionné : {{ selectedFile.name }}</span>
+      <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">{{ selectedFile.size  }}</span>
+    </div>
+  </div>
+
+  <!-- Result Box -->
+  <div *ngIf="importResult" class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex items-center">
+      <div class="bg-green-100 p-2 rounded-full mr-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
       </div>
+      <h3 class="text-lg font-semibold text-gray-800">Résultat de l'importation</h3>
+    </div>
+    <div class="p-4 bg-gray-50">
+      <pre class="bg-white p-4 rounded border border-gray-200 overflow-x-auto text-sm font-mono text-gray-800 max-h-96">{{ importResult | json }}</pre>
+    </div>
+  </div>
 
-      <!-- File Analysis Section -->
-      <div *ngIf="fileAnalysis" class="file-analysis leoni-analysis">
-        <h3 class="analysis-title"><mat-icon>analytics</mat-icon> File Analysis</h3>
-        
-        <div class="analysis-grid">
-          <!-- Detected Columns -->
-          <div class="analysis-card">
-            <h4 class="analysis-subtitle">
-              <mat-icon>view_column</mat-icon>
-              Detected Columns
-            </h4>
-            <div *ngIf="fileAnalysis.detectedColumns" class="column-list">
-              <div class="column-item" *ngFor="let item of fileAnalysis.detectedColumns | keyvalue">
-                <mat-icon class="column-icon">check_circle</mat-icon>
-                <span class="column-name">{{ item.key }}</span>
-                <span class="column-type">{{ item.value }}</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Year Columns -->
-          <div class="analysis-card">
-            <h4 class="analysis-subtitle">
-              <mat-icon>calendar_today</mat-icon>
-              Year Columns
-            </h4>
-            <div *ngIf="fileAnalysis.yearColumns?.length" class="year-list">
-              <div class="year-item" *ngFor="let col of fileAnalysis.yearColumns">
-                <div class="year-badge">{{ col.year }}</div>
-                <span class="year-header">{{ col.headerName }}</span>
-              </div>
-            </div>
-            <div *ngIf="!fileAnalysis.yearColumns?.length" class="warning-message">
-              <mat-icon>warning</mat-icon>
-              <span>No year columns detected. Make sure the file contains unit price columns.</span>
-            </div>
-          </div>
-
-          <!-- Mapping Information -->
-          <div class="analysis-card" *ngIf="fileAnalysis.mappingInfo">
-            <h4 class="analysis-subtitle">
-              <mat-icon>link</mat-icon>
-              Mapping Information
-            </h4>
-            <div class="mapping-list">
-              <div class="mapping-item" *ngFor="let item of fileAnalysis.mappingInfo | keyvalue">
-                <span class="mapping-key">{{ item.key }}:</span>
-                <span class="mapping-value">{{ item.value }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+  <!-- Error Box -->
+  <div *ngIf="error" class="bg-red-50 border-l-4 border-red-500 rounded-r px-4 py-3 flex items-start">
+    <div class="flex-shrink-0">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </div>
+    <div class="ml-3">
+      <h3 class="text-sm font-medium text-red-800">Erreur lors de l'importation</h3>
+      <div class="mt-1 text-sm text-red-700">
+        {{ error }}
       </div>
-
-      <mat-divider *ngIf="isValidFile" class="leoni-divider"></mat-divider>
-
-      <!-- Import Options -->
-      <div *ngIf="isValidFile" class="import-options leoni-options">
-        <h3 class="options-title"><mat-icon>tune</mat-icon> Import Options</h3>
-        
-        <div class="option-item">
-          <mat-slide-toggle 
-            [(ngModel)]="replaceExisting" 
-            color="primary" 
-            class="leoni-toggle">
-            Replace existing equipment data
-          </mat-slide-toggle>
-          <div class="option-hint">
-            <mat-icon>info</mat-icon>
-            <span>
-              If enabled, existing equipment with the same description will be updated with new data.
-              If disabled, existing equipment will be preserved and only new items will be added.
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Import Results -->
-      <div *ngIf="importResult" class="import-results leoni-results">
-        <h3 class="results-title"><mat-icon>assignment_turned_in</mat-icon> Import Results</h3>
-        <div class="result-grid">
-          <div class="result-item success">
-            <mat-icon>check_circle</mat-icon>
-            <span><strong>{{ importResult.message }}</strong></span>
-          </div>
-          <div class="result-item">
-            <mat-icon>format_list_numbered</mat-icon>
-            <span>Imported items: <strong>{{ importResult.count }}</strong></span>
-          </div>
-          <div class="result-item">
-            <mat-icon>swap_horiz</mat-icon>
-            <span>Replaced existing: <strong>{{ importResult.replacedExisting ? 'Yes' : 'No' }}</strong></span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Error Display -->
-      <div *ngIf="error && !isValidFile" class="error-container leoni-error">
-        <mat-icon>error</mat-icon>
-        <span>{{ error }}</span>
-      </div>
-    </mat-card-content>
-
-    <mat-card-actions align="end" class="leoni-actions">
-      <div class="flex justify-end space-x-4">
-        <!-- Reset Button -->
-        <button
-          mat-button
-          class="leoni-cancel-btn flex items-center px-4 py-2 rounded-md transition-all duration-200"
-          [class]="{
-            'opacity-50 cursor-not-allowed': isUploading || isAnalyzing || !selectedFile,
-            'hover:bg-gray-100 active:bg-gray-200': !(isUploading || isAnalyzing || !selectedFile)
-          }"
-          (click)="resetForm()" 
-          [disabled]="isUploading || isAnalyzing || !selectedFile"
-        >
-          <mat-icon class="mr-2 text-gray-600">clear</mat-icon>
-          <span class="text-gray-700 font-medium">Reset</span>
-        </button>
-      
-        <!-- Import Button -->
-        <button
-          mat-raised-button
-          class="leoni-import-btn flex items-center px-6 py-2 rounded-md shadow-sm transition-all duration-200"
-          [class]="{
-            'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white': !isUploading && isValidFile,
-            'bg-blue-300 cursor-not-allowed text-white': isUploading || !isValidFile || isAnalyzing
-          }"
-          (click)="importData()" 
-          [disabled]="!isValidFile || isUploading || isAnalyzing"
-        >
-          <span class="flex items-center">
-            <mat-icon *ngIf="!isUploading" class="mr-2">publish</mat-icon>
-            <mat-spinner *ngIf="isUploading" diameter="20" class="mr-2"></mat-spinner>
-            <span class="font-medium">
-              {{ isUploading ? 'Importing...' : 'Import Data' }}
-            </span>
-          </span>
-        </button>
-      </div>
-    </mat-card-actions>
-  </mat-card>
+    </div>
+  </div>
 </div>

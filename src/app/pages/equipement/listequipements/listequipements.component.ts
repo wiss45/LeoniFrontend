@@ -9,8 +9,8 @@ import { Equipement } from '../../../interfaces/equipement';
   styleUrl: './listequipements.component.css'
 })
 export class ListequipementsComponent {
-  
-
+  Isopen : boolean = false
+  selectedequipement : Equipement |null =null
   equipement : Equipement |null =null
   isOpen : boolean = false
   inputSearch : string = ""
@@ -74,6 +74,17 @@ export class ListequipementsComponent {
     this.equipement={... equipement}
     this.isOpen=true
   }
+
+
+  closeModalMod() {
+    this.selectedequipement=null
+    this.Isopen=false
+   }
+ 
+   openModalMod(equipement : Equipement) {
+     this.selectedequipement={... equipement}
+     this.Isopen=true
+   }
   
 
   add(equipement : Equipement){
@@ -85,6 +96,21 @@ export class ListequipementsComponent {
        } ,
        error : (err) => 
         console.error("Erreur lors de l'ajout d'équipement",err)
+       
+      })
+    }
+
+  }
+
+  modifier(id : number ,equipement : Equipement){
+    if(equipement) {
+      this.equipementService.updateEquipement(id,equipement).subscribe({
+       next : (response) => {
+        this.loadEquipements()
+        this.closeModalMod()
+       } ,
+       error : (err) => 
+        console.error("Erreur lors de modification d'équipement",err)
        
       })
     }

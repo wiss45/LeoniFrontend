@@ -87,10 +87,10 @@
       
           <!-- Action -->
           <div class="flex justify-end gap-2">
-            <button (click)="toggleEquipementDetails(projet.id)" class="text-sm cursor-pointer text-white bg-black/90 hover:bg-black px-4 rounded py-2  font-medium transition flex items-center gap-1">
+            <button (click)="openPlanModal(projet.id)"  class="text-sm cursor-pointer text-white bg-black/90 hover:bg-black px-4 rounded py-2  font-medium transition flex items-center gap-1">
                Equipements
            </button>
-            <button class="text-sm cursor-pointer text-white bg-green-600 px-4 rounded py-2 hover:bg-green-700 font-medium transition flex items-center gap-1">
+            <button (click)="openModalMod(projet)" class="text-sm cursor-pointer text-white bg-green-600 px-4 rounded py-2 hover:bg-green-700 font-medium transition flex items-center gap-1">
                Modifier
             </button>
             
@@ -121,33 +121,106 @@
     >
     </app-addprojet>
 
+
+    <app-modprojet
+    [IsOpen]="Isopen"
+    [Projet]="selectedprojet"
+    [TitleModal]="'Modifier Projet'"
+    (CloseModal)="closeModalMod()"
+    (savePRojet)="modifier(selectedprojet!.id,$event)"
+  >
+  </app-modprojet>
+
      
-  <!-- Modal for showing equipments of the selected plan -->
-  <div *ngIf="showEquipementDetails" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50" id="modal-content">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl p-8">
-      <div class="flex justify-between items-center border-b pb-4 mb-6" >
-        <h2 class="text-2xl font-bold text-blue-800 ">{{ selectedProjet!.name }}</h2>
-        <button (click)="closeEquipementDetails()" class="text-gray-500 no-print hover:text-red-600 text-2xl cursor-pointer">&times;</button>
-      </div>
-      <div class="space-y-4">
-        <div *ngFor="let equipement of selectedProjetEquipements">
-          <ul class="list-disc pl-5">
-            <li><a class="font-medium">{{ equipement.name }}</a></li>
-          </ul>
-        </div>
-        
-      </div>
-      <div class="flex justify-end mt-8 border-t pt-4 gap-3">
-        <button type="button" (click)="printModalContent()"
-          class="bg-black/90 no-print hover:bg-black text-white px-5 py-2 rounded-lg text-sm font-medium cursor-pointer">
-          Imprimer Equipements
-        </button>
-        <button type="button" (click)="closeEquipementDetails()"
-          class="bg-gray-200 no-print hover:bg-gray-300 text-gray-800 px-5 py-2 rounded-lg text-sm font-medium cursor-pointer">
-          Fermer
-        </button>
-      </div>
+    
+    
+<div *ngIf="showPlanModal" class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 backdrop-blur-sm">
+  <div class="bg-white rounded-xl shadow-2xl p-6 w-11/12 max-w-7xl max-h-[90vh] flex flex-col">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-bold text-gray-800">Détails des Équipements</h2>
+      <button (click)="closePlanModal()" class="text-gray-500 hover:text-gray-700">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    
+    <div class="overflow-auto mb-6 border rounded-lg shadow-sm">
+      <table class="w-full table-auto">
+        <thead class="bg-gray-50 sticky top-0">
+          <tr class="text-left text-gray-600 font-medium">
+            <th class="px-6 py-3 border-b">Équipement</th>
+            <th class="px-6 py-3 border-b text-right">Quantité</th>
+            <th class="px-6 py-3 border-b text-right">Prix Unitaire</th>
+            <th class="px-6 py-3 border-b text-right">Total</th>
+            <th class="px-6 py-3 border-b">N° Commande</th>
+            <th class="px-6 py-3 border-b text-right">Montant Commande</th>
+            <th class="px-6 py-3 border-b">N° PAM</th>
+            <th class="px-6 py-3 border-b">Date Cible</th>
+            <th class="px-6 py-3 border-b">Date Livraison</th>
+            <th class="px-6 py-3 border-b">Date RPR</th>
+            <th class="px-6 py-3 border-b">Statut</th>
+            <th class="px-6 py-3 border-b">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <tr *ngFor="let plan of plansParProjet" class="hover:bg-gray-50 transition-colors">
+            <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{{ plan.equipement.name }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-right">{{ plan.quantite }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-right">{{ plan.equipement.thirdUnitPrice | currency:'EUR':'symbol':'1.2-2' }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-right font-semibold text-blue-600">
+              {{ plan.quantite * plan.equipement.thirdUnitPrice | currency:'EUR':'symbol':'1.2-2' }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ plan.orderNumber }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-right">{{ plan.orderPrice | currency:'EUR':'symbol':'1.2-2' }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ plan.pamNumber }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ plan.targetDate | date:'dd/MM/yyyy' }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ plan.deliveryDate | date:'dd/MM/yyyy' }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ plan.rprdate | date:'dd/MM/yyyy' }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Complété</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap flex gap-2">
+              <button class="text-blue-600 hover:text-blue-800 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                </svg>
+               
+
+              </button>
+               <button  class="text-red-600 hover:text-red-800 transition-colors">
+               <svg (click)="delPlan(plan.id)" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-red-600">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M9 6V4a2 2 0 012-2h4a2 2 0 012 2v2M10 6h4m1 0h5a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h5m5 0h5m-6 4v4m0 4h4m0-4v-4M7 14h4m0 4H7m6-4h4m0 4h-4"></path>
+              </svg>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="flex justify-end gap-3 mt-auto">
+      <button (click)="printModalContent()" class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
+        </svg>
+        Imprimer
+      </button>
+      <button (click)="closePlanModal()" class="px-4 py-2 border border-gray-300 hover:bg-gray-50 rounded-lg transition-colors duration-300">
+        Fermer
+      </button>
     </div>
   </div>
-  </div>
+</div>
+
+    
+        
+        
+      </div>
+    </div>
+    
+
+    
+ 
+
   

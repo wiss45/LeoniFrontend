@@ -3,6 +3,8 @@ import { Projet } from '../../../interfaces/projet';
 import { ProjetService } from '../../../services/projet.service';
 import { Equipement } from '../../../interfaces/equipement';
 import { Router } from '@angular/router';
+import { PlanService } from '../../../services/plan.service';
+import { Plan } from '../../../interfaces/plan';
 
 @Component({
   selector: 'app-listprojets',
@@ -12,43 +14,120 @@ import { Router } from '@angular/router';
 })
 export class ListprojetsComponent {
 
+  selectedprojet: Projet | null = null;
 selectedProjet: Projet | null = null;
 projets:Projet [] = []
 filtredlist :Projet [] = []
 inputSearch : string = ''
 isOpen : boolean = false
+Isopen: boolean = false
 page: number = 1
 size: number = 10
 totalpages : number = 0
 projet : Projet | null = null
 showEquipementDetails: boolean = false;
-selectedProjetEquipements: Equipement[] = [];
+selectedPlan: Plan | null = null;
+plansParProjet: Plan[] = [];
+showPlanModal: boolean = false;
+plans: Plan[] = [];
+filtredList: Plan[] = []
 
-constructor(private service:ProjetService,private router :Router){}
-
-toggleEquipementDetails(projetId: number) {
-  const projet = this.filtredlist.find(p => p.id === projetId);
-  if (projet && projet.equipements) {
-    this.selectedProjet = projet;
-    this.selectedProjetEquipements = projet.equipements;
-    this.showEquipementDetails = true;
-  } else {
-    this.selectedProjet = null;
-    this.selectedProjetEquipements = []; 
-    this.showEquipementDetails = false; 
-  }
-}
-
-
-closeEquipementDetails() {
-  this.selectedProjet = null;
-  this.showEquipementDetails = false;
-  this.selectedProjetEquipements = [];
-}
+constructor(private service:ProjetService,private router :Router,private planService: PlanService ){}
 
 ngOnInit() : void {
-this.loadProjets()
+  this.loadProjets()
+  this.loadPlans()
+  }
+
+
+  
+  loadPlans(): void {
+    this.planService.getAllPlans(this.page - 1, this.size).subscribe({
+      next: (data) => {
+        this.plans = data.content;
+        this.filtredList = data.content;
+        this.totalpages = data.totalPages;
+        console.log(data)
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement des plans', error);
+      }
+    });
+  }
+
+
+  delPlan(id: number): void {
+    if (confirm('Voulez-vous vraiment supprimer ce plan ?')) {
+      this.planService.deletePlan(id).subscribe({
+        next: () => {
+          
+        },
+        error: (err) => {
+          console.error("Erreur lors de la suppression du plan", err);
+        }
+      });
+    }
+  }
+
+ /* toggleEquipementDetails(projetId: number) {
+    const relatedPlans = this.filtredList.filter(p => p.projet.id === projetId);
+  
+    if (relatedPlans.length > 0) {
+      this.selectedPlan = relatedPlans[0]; 
+      this.showEquipementDetails = true;
+    } else {
+      this.selectedPlan = null;
+      this.showEquipementDetails = false;
+    }
+  }
+
+  closeEquipementDetails() {
+  this.showEquipementDetails = false;
+  this.selectedPlan = null;
+}*/
+
+
+
+
+openPlanModal(id: number): void {
+  this.planService.getPlanParProjetId(id).subscribe({
+    next: (data) => {
+      this.plansParProjet = data;
+      this.showPlanModal = true;
+      console.log(data)
+    },
+    error: (err) => {
+      console.error('Erreur lors du chargement des plans du projet', err);
+    }
+  });
 }
+
+closePlanModal(): void {
+  this.plansParProjet = [];
+  this.showPlanModal = false;
+}
+
+
+  modifier(id : number ,projet : Projet){
+    if(projet) {
+      this.service.updateProjet(id,projet).subscribe({
+       next : (response) => {
+        this.loadProjets()
+        this.closeModalMod()
+       } ,
+       error : (err) => 
+        console.error("Erreur lors de modification d'équipement",err)
+       
+      })
+    }
+
+  }  
+
+
+
+
+
+
 
 loadProjets () : void {
   this.service.getAllProjets(this.page-1,this.size).subscribe({
@@ -87,6 +166,15 @@ loadProjets () : void {
     }
   }
 
+  closeModalMod() {
+    this.selectedprojet=null
+    this.Isopen=false
+   }
+ 
+   openModalMod(projet : Projet) {
+     this.selectedprojet={... projet}
+     this.Isopen=true
+   }
 
   closeModal() {
    this.projet=null
@@ -116,13 +204,45 @@ loadProjets () : void {
 
 
   printModalContent(): void {
-    const printContents = document.getElementById('modal-content')?.innerHTML || '';
+    // Créer un clone du contenu de la modal sans les éléments non imprimables
+    const modalContent = document.querySelector('.fixed.inset-0 .bg-white.rounded-lg')?.cloneNode(true) as HTMLElement;
+    
+    // Supprimer les éléments qu'on ne veut pas imprimer
+    if (modalContent) {
+      const closeButton = modalContent.querySelector('button');
+      if (closeButton) closeButton.remove();
+      
+      const modalFooter = modalContent.querySelector('.bg-gray-50');
+      if (modalFooter) modalFooter.remove();
+      
+      // Supprimer les effets de hover
+      const hoverRows = modalContent.querySelectorAll('.hover\\:bg-gray-50');
+      hoverRows.forEach(row => row.classList.remove('hover:bg-gray-50'));
+      
+      // Ajouter des classes pour l'impression
+      const table = modalContent.querySelector('table');
+      if (table) {
+        table.classList.add('w-full', 'border-collapse');
+      }
+      
+      const thElements = modalContent.querySelectorAll('th');
+      thElements.forEach(th => {
+        th.classList.add('bg-blue-600', 'text-white', 'p-2', 'border');
+      });
+      
+      const tdElements = modalContent.querySelectorAll('td');
+      tdElements.forEach(td => {
+        td.classList.add('p-2', 'border');
+      });
+    }
+
+    const printContents = modalContent?.innerHTML || '';
     const printWindow = window.open('', '', 'height=600,width=800');
     
     printWindow?.document.write(`
       <html>
         <head>
-          <title>Liste des Plans - Leoni Tunisie</title>
+          <title>Équipements du Projet - Leoni Tunisie</title>
           <style>
             /* Reset et base */
             body {
@@ -210,68 +330,37 @@ loadProjets () : void {
             }
             
             /* Tableau professionnel */
-            .data-table {
+            table {
               width: 100%;
               border-collapse: collapse;
-              margin-top: 10px;
+              margin-top: 15px;
               font-size: 9pt;
               page-break-inside: auto;
             }
             
-            .data-table thead th {
-              background-color: #00558B;
-              color: white;
-              padding: 6px 8px;
+            th {
+              background-color: #00558B !important;
+              color: white !important;
+              padding: 8px !important;
               text-align: left;
               font-weight: 600;
-              font-size: 8.5pt;
-              border: 1px solid #004074;
+              border: 1px solid #004074 !important;
             }
             
-            .data-table tbody td {
-              padding: 5px 8px;
-              border: 1px solid #e0e0e0;
+            td {
+              padding: 6px 8px !important;
+              border: 1px solid #ddd !important;
               vertical-align: middle;
             }
             
-            .data-table tbody tr:nth-child(even) {
+            tr:nth-child(even) {
               background-color: #f8fafc;
             }
             
             /* Styles spécifiques colonnes */
-            .col-pam {
-              width: 8%;
+            .text-blue-600 {
+              color: #00558B !important;
               font-weight: 600;
-              color: #00558B;
-            }
-            
-            .col-projet {
-              width: 18%;
-            }
-            
-            .col-price {
-              width: 8%;
-              text-align: right;
-              font-family: 'Courier New', monospace;
-            }
-            
-            .col-quantity {
-              width: 6%;
-              text-align: center;
-            }
-            
-            .col-order {
-              width: 10%;
-            }
-            
-            .col-date {
-              width: 10%;
-              white-space: nowrap;
-            }
-            
-            .col-rpr {
-              width: 10%;
-              white-space: nowrap;
             }
             
             /* Pied de page */
@@ -331,7 +420,7 @@ loadProjets () : void {
             <div class="header">
               <div class="company-header">
                 <div class="logo-container">
-                  <img src="path-to-leoni-logo.png" alt="LEONI Tunisie" />
+                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcTLC5ZC3GyLb-xf48iR9GpowGlf0-0EW35Q&s" alt="LEONI Tunisie" />
                 </div>
                 <div class="company-info">
                   <div class="company-name">LEONI Wiring Systems Tunisie</div>
@@ -346,22 +435,22 @@ loadProjets () : void {
               </div>
               
               <div class="document-info">
-                <h1 class="document-title">EQUIPEMENTS DU PROJET</h1>
-                <div class="document-subtitle">Document technique - Suivi de production</div>
+                <h1 class="document-title">DÉTAIL DES ÉQUIPEMENTS</h1>
+                <div class="document-subtitle">Projet: ${this.selectedPlan?.projet?.name || 'Non spécifié'}</div>
                 <div class="document-meta">
                   Généré le ${new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}
                   &nbsp;|&nbsp;
-                  Réf: PL-${new Date().getFullYear()}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}
+                  Réf: EQ-${new Date().getFullYear()}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}
                 </div>
               </div>
             </div>
-        </head>
-        <body>
-         
-          <div style="font-weight: bolder;">
-            ${printContents}
-          </div>
-        <!-- Pied de page -->
+            
+            <!-- Contenu principal -->
+            <div class="document-content">
+              ${printContents}
+            </div>
+            
+            <!-- Pied de page -->
             <div class="footer">
               LEONI Wiring Systems Tunisie &copy; ${new Date().getFullYear()} 
               | RC: 12345678A/M/B 
@@ -372,9 +461,12 @@ loadProjets () : void {
         </body>
       </html>
     `);
+    
     printWindow?.document.close();
-    printWindow?.print();
-  }
+    setTimeout(() => {
+      printWindow?.print();
+    }, 500);
+}
 
 
  

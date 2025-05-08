@@ -33,15 +33,19 @@ export class ProjetService {
 
 
   updateProjet(id: number, projet: Projet): Observable<Projet> {
-    return this.http.put<Projet>(`${this.apiUrl}/${id}`, projet);
+    return this.http.put<Projet>(`${this.apiUrl}${id}`, projet);
   }
 
 
   deleteProjet(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}${id}`);
   }
 
   NombreProjets() : Observable<number> {
     return this.http.get<number>(`${this.apiUrl}nombreProjets`)
+   }
+
+   getApprovedProjets() : Observable<Projet[]> {
+    return this.http.get<Projet[]>(`${this.apiUrl}draftprojets`)
    }
 }

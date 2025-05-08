@@ -3,6 +3,7 @@ import { Chart } from 'chart.js';
 import { EquipementService } from '../../services/equipement.service';
 import { ProjetService } from '../../services/projet.service';
 import { forkJoin } from 'rxjs';
+import { Projet } from '../../interfaces/projet';
 @Component({
   selector: 'app-dashboard',
   standalone: false,
@@ -14,7 +15,7 @@ export class DashboardComponent {
 nombreEquipements : number = 0 ;
 nombreProjets : number = 0 ;
 currentDate = new Date();
-
+projetsapproved : Projet[] = []
 
 projetStat = [
   {
@@ -80,15 +81,21 @@ this.loadstat()
 loadstat() : void {
  const equipements = this.serviceEquipements.NombreEquipements()
  const projets = this.serviceProjets.NombreProjets()
- forkJoin([equipements,projets]).subscribe({
+ const projet = this.serviceProjets.getApprovedProjets()
+ forkJoin([equipements,projets,projet]).subscribe({
   next: (data:any) => {
     this.nombreEquipements=data[0]
     this.nombreProjets=data[1]
+    this.projetsapproved=data[2]
+
    },
    error : (err) => console.error("Erreur récupération de nombre des équipements" ,err)
   })
  }
-   
+  
+
+
+  
 }
  
  

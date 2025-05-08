@@ -67,7 +67,7 @@
               {{ equipement.capexType }}
             </td>
             <td class="px-4 py-2 flex gap-3">
-              <button  class="text-blue-500 hover:text-blue-700">
+              <button (click)="openModalMod(equipement)" class="text-blue-500 hover:text-blue-700">
                 ✏️
               </button>
               <button (click)="delEquipement(equipement.id)" class="text-red-500 hover:text-red-700">
@@ -102,5 +102,16 @@
     >
 
     </app-addequipement>
+
+
+    <app-modequipement
+    [IsOpen]="Isopen"
+    [Equipement]="selectedequipement"
+    [TitleModal]="'Modifier Equipement'"
+    (CloseModal)="closeModalMod()"
+    (saveEQuipement)="modifier(selectedequipement!.id,$event)"
+    >
+
+    </app-modequipement>
   </div>
   

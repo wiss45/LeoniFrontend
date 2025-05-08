@@ -18,7 +18,8 @@ import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
-    ImportexcelComponent
+    ImportexcelComponent,
+    
   ],
   imports: [
     CommonModule,

@@ -10,22 +10,19 @@ import { ProjetModule } from './pages/projet/projet.module';
 import { PlanModule } from './pages/plan/plan.module';
 import { UserModule } from './pages/user/user.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptorsService } from './services/token-interceptor.service';
 import { NotificationModule } from './pages/notification/notification.module';
 import { ExcelModule } from './pages/excel/excel.module';
-
-
-
 
 @NgModule({
   declarations: [
     AppComponent,
     MainlayoutComponent,
-    DashboardComponent
+    DashboardComponent,
   ],
   imports: [
-    BrowserModule,  
+    BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     LucideAngularModule.pick({ LayoutDashboard, Server, Briefcase, FileText }),
@@ -35,15 +32,13 @@ import { ExcelModule } from './pages/excel/excel.module';
     UserModule,
     NotificationModule,
     ExcelModule,
- 
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptorsService, 
+      useClass: TokenInterceptorsService,
       multi: true
-    },
-   provideHttpClient(withInterceptorsFromDi())
+    }
   ],
   bootstrap: [AppComponent]
 })

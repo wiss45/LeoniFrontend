@@ -4,7 +4,7 @@ import { Projet } from "./projet";
 export interface Plan {
     id: number;
     projet: Projet;
-    equipements: Equipement[];
+    equipement: Equipement;
     orderNumber: number;
     orderPrice: number;
     pamNumber: string;

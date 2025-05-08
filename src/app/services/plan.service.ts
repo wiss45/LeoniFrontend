@@ -19,7 +19,7 @@ export class PlanService {
 
   getAllPlans(page: number , size: number ): Observable<PaginatedPlanResponse<Plan>> {
 
-    return this.http.get<PaginatedPlanResponse<Plan>>(`${this.apiUrl}?page=${page}&size=${size}`);
+    return this.http.get<PaginatedPlanResponse<Plan>>(`${this.apiUrl}page/?page=${page}&size=${size}`);
   }
 
 
@@ -31,10 +31,18 @@ export class PlanService {
   updatePlan(id: number, plan: any): Observable<Plan> {
     return this.http.put<Plan>(`${this.apiUrl}/${id}`, plan);
   }
-
+ 
   
   deletePlan(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}${id}`);
   }
+
+  getPlanParProjetId(id:number) : Observable<Plan[]>  {
+    return this.http.get<Plan[]>(`${this.apiUrl}projets/${id}`)
+  }
+
+ /* nombreEquipementsPlan(id: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}nombreequipementsplan/${id}`);
+  }*/
 
 }
