@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 import { NotificationRoutingModule } from './notification-routing.module';
 
 import { ListNotificationsComponent } from './list-notifications/list-notifications.component';
+import { NotificationsequipementsComponent } from './notificationsequipements/notificationsequipements.component';
 
 
 @NgModule({
   declarations: [
-    ListNotificationsComponent
+    ListNotificationsComponent,
+    NotificationsequipementsComponent
   ],
   imports: [
     CommonModule,
