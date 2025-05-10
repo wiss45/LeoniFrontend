@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Projet } from '../../../interfaces/projet'; 
+import { UserService } from '../../../services/user.service';
+import { User } from '../../../interfaces/User';
 
 @Component({
   selector: 'app-addprojet',
@@ -14,6 +16,14 @@ export class AddprojetComponent {
   @Input() TitleModal: string = '';
   @Output() CloseModal = new EventEmitter<void>();
   @Output() saveProjet = new EventEmitter<Projet>();
+ 
+  responsables : User[] = []
+
+constructor(private userService : UserService){}
+
+ngOnInit () : void {
+  this.loadUsers()
+}
 
   close(): void {
     this.CloseModal.emit();
@@ -23,6 +33,16 @@ export class AddprojetComponent {
     if (this.Projet) {
       this.saveProjet.emit(this.Projet);
     }
+  }
+
+  loadUsers(): void{
+      this.userService.getAllUsers().subscribe({
+        next : (data) => {
+          this.responsables = data
+          console.log(data)
+        },
+         error : (err) => console.error("Erreur lors de récupérations des users" , err)
+      })
   }
 
 }

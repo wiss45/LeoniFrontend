@@ -31,15 +31,49 @@ plansParProjet: Plan[] = [];
 showPlanModal: boolean = false;
 plans: Plan[] = [];
 filtredList: Plan[] = []
+plan: Plan | null = null;
+isOpenModalPlan: boolean = false;
+username: string = '';
+role: string = '';
+isAdmin: boolean = false;
+
 
 constructor(private service:ProjetService,private router :Router,private planService: PlanService ){}
 
 ngOnInit() : void {
+  this.username = sessionStorage.getItem('username') || '';
+  this.role = sessionStorage.getItem('role') || '';
+  this.isAdmin = this.role === 'ADMIN';
   this.loadProjets()
   this.loadPlans()
   }
 
+ closeModalPlan(): void {
+    this.plan = null;
+    this.isOpenModalPlan = false;
+  }
 
+  openModalAjoutPlan(plan: Plan): void {
+    this.plan = { ...plan };
+    this.isOpenModalPlan = true;
+  }
+
+  addPlan(plan: Plan): void {
+    if (plan) {
+      this.planService.createPlan(plan).subscribe({
+        next: (response) => {
+          this.loadPlans();
+          this.closeModalPlan();
+          
+          console.log(response)
+        },
+        error: (err) => {
+          console.error("Erreur lors de l'ajout du plan", err);
+          
+        }
+      });
+    }
+  }
   
   loadPlans(): void {
     this.planService.getAllPlans(this.page - 1, this.size).subscribe({
@@ -60,7 +94,8 @@ ngOnInit() : void {
     if (confirm('Voulez-vous vraiment supprimer ce plan ?')) {
       this.planService.deletePlan(id).subscribe({
         next: () => {
-          
+           this.plansParProjet = this.plansParProjet.filter(p => p.id !== id);
+        this.loadPlans();
         },
         error: (err) => {
           console.error("Erreur lors de la suppression du plan", err);
@@ -125,21 +160,28 @@ closePlanModal(): void {
 
 
 
-
-
-
-
-loadProjets () : void {
-  this.service.getAllProjets(this.page-1,this.size).subscribe({
-    next : (data) => {
-      this.projets=data.content
-      this.filtredlist=data.content
-      this.totalpages=data.totalPages
-      console.log(data)
-    },
-    error : (err) => console.error("Erreur lors de récupération des projets" , err)
-  })
+loadProjets(): void {
+  if (this.isAdmin) {
+    this.service.getAllProjets(this.page - 1, this.size).subscribe({
+      next: (data) => {
+        this.projets = data.content;
+        this.filtredlist = data.content;
+        this.totalpages = data.totalPages;
+      },
+      error: (err) => console.error('Erreur lors de récupération des projets', err),
+    });
+  } else {
+    this.service.getProjetsByResponsable(this.username, this.page - 1, this.size).subscribe({
+      next: (data) => {
+        this.projets = data.content;
+        this.filtredlist = data.content;
+        this.totalpages = data.totalPages;
+      },
+      error: (err) => console.error('Erreur lors de récupération des projets de l\'utilisateur', err),
+    });
+  }
 }
+
 
  delProjet(id:number) : void {
     if(confirm("Are you Sure?")){
@@ -203,23 +245,29 @@ loadProjets () : void {
   }
 
 
-  printModalContent(): void {
+printModalContent(): void {
     // Créer un clone du contenu de la modal sans les éléments non imprimables
-    const modalContent = document.querySelector('.fixed.inset-0 .bg-white.rounded-lg')?.cloneNode(true) as HTMLElement;
+    const modalContent = document.querySelector('.fixed.inset-0 .bg-white.rounded-xl')?.cloneNode(true) as HTMLElement;
     
     // Supprimer les éléments qu'on ne veut pas imprimer
     if (modalContent) {
-      const closeButton = modalContent.querySelector('button');
-      if (closeButton) closeButton.remove();
+      // Supprimer le header avec le titre et le bouton de fermeture
+      const modalHeader = modalContent.querySelector('.flex.justify-between.items-center.mb-6');
+      if (modalHeader) modalHeader.remove();
       
-      const modalFooter = modalContent.querySelector('.bg-gray-50');
+      // Supprimer les boutons d'action dans le tableau
+      const actionButtons = modalContent.querySelectorAll('td.flex.gap-2');
+      actionButtons.forEach(button => button.remove());
+      
+      // Supprimer les boutons en bas de la modal
+      const modalFooter = modalContent.querySelector('.flex.justify-end.gap-3.mt-auto');
       if (modalFooter) modalFooter.remove();
       
       // Supprimer les effets de hover
       const hoverRows = modalContent.querySelectorAll('.hover\\:bg-gray-50');
       hoverRows.forEach(row => row.classList.remove('hover:bg-gray-50'));
       
-      // Ajouter des classes pour l'impression
+      // Ajouter des styles pour l'impression
       const table = modalContent.querySelector('table');
       if (table) {
         table.classList.add('w-full', 'border-collapse');
@@ -228,11 +276,20 @@ loadProjets () : void {
       const thElements = modalContent.querySelectorAll('th');
       thElements.forEach(th => {
         th.classList.add('bg-blue-600', 'text-white', 'p-2', 'border');
+        th.classList.remove('px-6', 'py-3', 'border-b');
       });
       
       const tdElements = modalContent.querySelectorAll('td');
       tdElements.forEach(td => {
         td.classList.add('p-2', 'border');
+        td.classList.remove('px-6', 'py-4', 'whitespace-nowrap');
+      });
+
+      // Gérer les statuts
+      const statusSpans = modalContent.querySelectorAll('span');
+      statusSpans.forEach(span => {
+        span.classList.remove('px-2', 'py-1', 'text-xs', 'rounded-full');
+        span.classList.add('font-semibold');
       });
     }
 
@@ -317,6 +374,12 @@ loadProjets () : void {
               font-weight: 600;
               margin: 0;
             }
+
+             .document-content {
+              
+              margin-right: 34mm;
+            }
+
             
             .document-subtitle {
               color: #555;
@@ -363,6 +426,22 @@ loadProjets () : void {
               font-weight: 600;
             }
             
+            /* Styles pour les statuts */
+            .bg-amber-100 {
+              background-color: #fef3c7 !important;
+              color: #92400e !important;
+            }
+            
+            .bg-green-100 {
+              background-color: #d1fae5 !important;
+              color: #065f46 !important;
+            }
+            
+            .bg-red-100 {
+              background-color: #fee2e2 !important;
+              color: #991b1b !important;
+            }
+            
             /* Pied de page */
             .footer {
               margin-top: 10mm;
@@ -387,11 +466,12 @@ loadProjets () : void {
             }
             
             /* Styles d'impression */
-            @media print {
-              @page {
-                size: A4;
-                margin: 15mm;
+             @media print {
+              .document-content {
+              
+                margin-right: 50mm !important;
               }
+            }
               
               body {
                 -webkit-print-color-adjust: exact;
@@ -435,8 +515,8 @@ loadProjets () : void {
               </div>
               
               <div class="document-info">
-                <h1 class="document-title">DÉTAIL DES ÉQUIPEMENTS</h1>
-                <div class="document-subtitle">Projet: ${this.selectedPlan?.projet?.name || 'Non spécifié'}</div>
+                <h1 class="document-title">DÉTAILS DES ÉQUIPEMENTS</h1>
+                <div class="document-subtitle">Projet: ${this.selectedProjet?.name || 'Non spécifié'}</div>
                 <div class="document-meta">
                   Généré le ${new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}
                   &nbsp;|&nbsp;
@@ -446,7 +526,7 @@ loadProjets () : void {
             </div>
             
             <!-- Contenu principal -->
-            <div class="document-content">
+            <div class="document-content mr-4">
               ${printContents}
             </div>
             
@@ -468,6 +548,23 @@ loadProjets () : void {
     }, 500);
 }
 
+goToFormUpdate(id:number) {
+  this.router.navigate(['users/projets/modplan',id])
+}
 
+prevPage() {
+  if(this.page > 1) {
+    this.page -- ;
+    this.loadProjets()
+  }
+}
+
+
+nextPage() {
+  if(this.page < this.totalpages) {
+    this.page ++ ;
+    this.loadProjets()
+  }
+}
  
 }

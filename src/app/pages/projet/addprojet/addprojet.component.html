@@ -75,9 +75,12 @@
 
       <div class="ml-2">
         <label class="text-sm text-gray-600 font-medium">Responsable</label>
-        <input type="text" [(ngModel)]="Projet!.responsable" name="responsable" required
+        <select type="text" [(ngModel)]="Projet!.responsable" name="responsable" required
           class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 bg-white text-sm cursor-pointer"
-          placeholder="Responsable" />
+          placeholder="Responsable" >
+          <option value="" disabled selected>Sélectionner un responsable</option>
+          <option *ngFor="let res of responsables" [value]="res.username">{{res.username}}</option>
+        </select>
       </div>
 
       <div class="mr-2">

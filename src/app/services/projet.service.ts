@@ -25,6 +25,11 @@ export class ProjetService {
     return this.http.get<Projet[]>(this.apiUrl);
   }
 
+getProjetsByResponsable(responsable: string, page: number, size: number): Observable<any> {
+  const encodedResponsable = encodeURIComponent(responsable); // Encoder le nom du responsable
+  return this.http.get(`http://localhost:8084/projets/by-responsable?responsable=${encodedResponsable}&page=${page}&size=${size}`);
+}
+
 
 
   createProjet(projet: Projet): Observable<Projet> {

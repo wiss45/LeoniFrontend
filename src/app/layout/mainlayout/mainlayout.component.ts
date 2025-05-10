@@ -24,7 +24,7 @@ export class MainlayoutComponent {
   { name: "Dashboard", link: "/users", icon: "layout-dashboard" },
   { name: "Equipements", link: "/users/equipements", icon: "server" },
   { name: "Projets", link: "/users/projets", icon: "briefcase" },
-  { name: "Plans", link: "/users/plans", icon: "file-text" },
+  
 ];
 
   

@@ -6,6 +6,7 @@ import { Equipement } from '../../../interfaces/equipement';
 import { Projet } from '../../../interfaces/projet';
 import { forkJoin } from 'rxjs';
 
+
 @Component({
   selector: 'app-addplan',
   standalone: false,
@@ -13,8 +14,7 @@ import { forkJoin } from 'rxjs';
   styleUrl: './addplan.component.css'
 })
 export class AddplanComponent {
- 
-  @Input() IsOpen: boolean = false;
+ @Input() IsOpen: boolean = false;
   @Input() Plan: Plan | null = null;
   @Input() TitleModal: string = '';
   @Output() CloseModal = new EventEmitter<void>();

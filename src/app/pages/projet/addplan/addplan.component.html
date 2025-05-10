@@ -21,7 +21,7 @@
 
       <div>
         <label class="text-sm text-gray-600 font-medium">Équipement</label>
-        <select [(ngModel)]="Plan.equipements" name="equipements" 
+        <select [(ngModel)]="Plan.equipement" name="equipement" 
           class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800 bg-gray-50 text-sm cursor-pointer">
           <option value="null" disabled>Sélectionner un Équipement</option>
           <option *ngFor="let equipement of equipements" [ngValue]="equipement">

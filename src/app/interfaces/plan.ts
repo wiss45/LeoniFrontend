@@ -12,4 +12,5 @@ export interface Plan {
     targetDate: Date;
     deliveryDate: Date;
     rprdate: Date;
+    statut : string;
   }

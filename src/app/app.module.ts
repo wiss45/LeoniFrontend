@@ -7,7 +7,7 @@ import { MainlayoutComponent } from './layout/mainlayout/mainlayout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { EquipementModule } from './pages/equipement/equipement.module';
 import { ProjetModule } from './pages/projet/projet.module';
-import { PlanModule } from './pages/plan/plan.module';
+
 import { UserModule } from './pages/user/user.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -28,7 +28,7 @@ import { ExcelModule } from './pages/excel/excel.module';
     LucideAngularModule.pick({ LayoutDashboard, Server, Briefcase, FileText }),
     EquipementModule,
     ProjetModule,
-    PlanModule,
+   
     UserModule,
     NotificationModule,
     ExcelModule,

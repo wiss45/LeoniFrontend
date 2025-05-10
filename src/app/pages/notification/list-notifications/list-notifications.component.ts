@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { User } from '../../../interfaces/User';
+import { PlanService } from '../../../services/plan.service';
+import { Plan } from '../../../interfaces/plan';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-notifications',
@@ -11,13 +14,43 @@ import { User } from '../../../interfaces/User';
 export class ListNotificationsComponent {
    
   users : User[] = []
+  plans : Plan[] =[]
+  plansToNotify: Plan[] = [];
 
-  constructor(private serviceUser : UserService){}
+  constructor(private serviceUser : UserService , private planService: PlanService , private router : Router){}
   
   ngOnInit(): void{
+     this.planService.getPlans().subscribe((data: Plan[]) => {
+      this.plans = data;
+      this.filterPlansToNotify();
+    });
    this.loadUsers()
   }
 
+
+
+viewPlanDetails(planId: number) {
+  // Navigation vers la page de détails
+  this.router.navigate(['/plans', planId]);
+}
+
+dismissNotification() {
+  // Logique pour masquer la notification
+  this.plansToNotify = [];
+}
+  
+  filterPlansToNotify(): void {
+    const today = new Date();
+
+    this.plansToNotify = this.plans.filter(plan => {
+      if (!plan.deliveryDate) return false;
+
+      const deliveryDate = new Date(plan.deliveryDate);
+      const diffInDays = Math.ceil((deliveryDate.getTime() - today.getTime()) / (1000 * 3600 * 24));
+
+      return diffInDays === 1; 
+    });
+  }
   getRoleNames(roles: any[]): string {
     return roles.map(role => role.name).join(', ');
   }

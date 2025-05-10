@@ -35,6 +35,10 @@ private Url = environment.URL + 'users/'
   getUsers() : Observable<User[]> {
     return this.http.get<User[]>(this.Url)
   }
+
+   getAllUsers() : Observable<User[]> {
+    return this.http.get<User[]>(`${this.Url}allusers`)
+  }
   
   notifyUpdates() {
     this.notificationsUpdated.next();

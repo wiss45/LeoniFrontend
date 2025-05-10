@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { EquipementService } from '../../../services/equipement.service';
 import { Equipement } from '../../../interfaces/equipement';
+import { NfcIcon } from 'lucide-angular';
 
 @Component({
   selector: 'app-listequipements',
@@ -115,6 +116,20 @@ export class ListequipementsComponent {
       })
     }
 
+  }
+
+  prevPage() {
+  if(this.page > 1) {
+    this.page-- ;
+    this.loadEquipements();
+  }
+  }
+
+  nextPage() {
+  if(this.page  < this.totalpages) {
+    this.page++ ;
+    this.loadEquipements();
+  }
   }
 
 }

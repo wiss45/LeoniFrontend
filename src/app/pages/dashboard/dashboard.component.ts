@@ -78,6 +78,22 @@ this.loadstat()
 }
 
 
+ 
+  // Méthodes pour les graphiques
+  getTrendHeight(value: number, trendData: number[]): number {
+    const maxValue = Math.max(...trendData, 1);
+    return (value / maxValue) * 20; // 20px de hauteur max
+  }
+
+  getTrendPoints(trendData: number[]): string {
+    const maxValue = Math.max(...trendData, 1);
+    return trendData.map((value, index) => {
+      const x = (index / (trendData.length - 1)) * 100;
+      const y = 40 - (value / maxValue) * 35;
+      return `${x},${y}`;
+    }).join(' ');
+  }
+
 loadstat() : void {
  const equipements = this.serviceEquipements.NombreEquipements()
  const projets = this.serviceProjets.NombreProjets()

@@ -6,13 +6,17 @@ import { ListprojetsComponent } from './listprojets/listprojets.component';
 import { AddprojetComponent } from './addprojet/addprojet.component';
 import { FormsModule } from '@angular/forms';
 import { ModprojetComponent } from './modprojet/modprojet.component';
+import { ModplanComponent } from './modplan/modplan.component';
+import { AddplanComponent } from './addplan/addplan.component';
 
 
 @NgModule({
   declarations: [
     ListprojetsComponent,
     AddprojetComponent,
-    ModprojetComponent
+    ModprojetComponent,
+    ModplanComponent,
+    AddplanComponent
   ],
   imports: [
     CommonModule,
