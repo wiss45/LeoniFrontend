@@ -4,6 +4,9 @@ import { Component } from '@angular/core';
 
 import { AuthentificationService } from '../../services/authentification.service';
 import { UserService } from '../../services/user.service';
+import { PlanService } from '../../services/plan.service';
+import { Plan } from '../../interfaces/plan';
+import { User } from '../../interfaces/User';
 @Component({
   selector: 'app-mainlayout',
   standalone: false,
@@ -17,8 +20,9 @@ export class MainlayoutComponent {
   itemActive :  string = ''
   user = sessionStorage.getItem("username")
   role = sessionStorage.getItem("role")
-
+  User: User | null = null;
   notificationNomber : number = 0
+  notificationNomberEquip : number = 0
 
    sidebarItems = [
   { name: "Dashboard", link: "/users", icon: "layout-dashboard" },
@@ -28,14 +32,26 @@ export class MainlayoutComponent {
 ];
 
   
-  constructor( private serviceAuth : AuthentificationService , private serviceUser : UserService){}
+  constructor( private serviceAuth : AuthentificationService , private serviceUser : UserService , private planService: PlanService){}
 
-  ngOnInit(): void {
-    this.CountNotifications();
-    
-    // S'abonner aux mises à jour
+    ngOnInit(): void {
+    this.CountNotifications();  // Initialiser le comptage des notifications
+
+    // S'abonner aux mises à jour des notifications
     this.serviceUser.notificationsUpdated$.subscribe(() => {
-      this.CountNotifications();
+      this.CountNotifications();  // Met à jour le comptage des notifications quand elles changent
+    });
+
+    this.loadPlanNotifications();  // Charger les notifications liées aux plans
+
+    // Récupérer les données de l'utilisateur actuel
+    this.serviceUser.getCurrentUser().subscribe({
+      next: (data: User) => {
+        this.User = data;  // Assure-toi que data est bien de type User
+      },
+      error: (err) => {
+        console.error('Erreur de récupération des données utilisateur', err);
+      }
     });
   }
   
@@ -43,7 +59,20 @@ export class MainlayoutComponent {
     this.itemActive=Componentname ;
   }
 
+loadPlanNotifications(): void {
+    this.planService.getPlans().subscribe((plans: Plan[]) => {
+      const today = new Date();
+      const plansToNotify = plans.filter(plan => {
+        if (!plan.deliveryDate) return false;
 
+        const deliveryDate = new Date(plan.deliveryDate);
+        const diffInDays = Math.ceil((deliveryDate.getTime() - today.getTime()) / (1000 * 3600 * 24));
+        return diffInDays === 1;
+      });
+
+      this.notificationNomberEquip = plansToNotify.length;
+    });
+  }
 
 
   toggleIconUser() {

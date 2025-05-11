@@ -31,10 +31,7 @@ plans : Plan[] =[]
     this.router.navigate(['/plans', planId]);
   }
   
-  dismissNotification() {
-   
-    this.plansToNotify = [];
-  }
+
     
     filterPlansToNotify(): void {
       const today = new Date();

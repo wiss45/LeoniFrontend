@@ -1,0 +1,76 @@
+<div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden md:max-w-2xl my-8">
+  <!-- En-tête avec les couleurs Leoni -->
+  <div class="bg-blue-800 py-4 px-6">
+    <h2 class="text-white text-xl font-bold">Mise à jour du profil</h2>
+    <p class="text-blue-200 text-sm">Leoni Tunisie - Espace personnel</p>
+  </div>
+
+  <!-- Message de statut -->
+  <div *ngIf="message" class="bg-blue-100 border-l-4 border-blue-800 text-blue-800 p-4 mx-4 mt-4">
+    <p>{{ message }}</p>
+  </div>
+
+  <!-- Formulaire -->
+  <form (ngSubmit)="onSubmit()" class="p-6 space-y-6">
+    <div class="space-y-2">
+      <label for="username" class="block text-sm font-medium text-gray-700">Nom d'utilisateur</label>
+      <input 
+        type="text" 
+        id="username" 
+        [(ngModel)]="userForm.username" 
+        name="username" 
+        required
+        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-800 focus:border-blue-800" />
+    </div>
+
+    <div class="space-y-2">
+      <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+      <input 
+        type="email" 
+        id="email" 
+        [(ngModel)]="userForm.email" 
+        name="email" 
+        required
+        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-800 focus:border-blue-800" />
+    </div>
+
+    <div class="space-y-2">
+      <label for="password" class="block text-sm font-medium text-gray-700">Nouveau mot de passe (optionnel)</label>
+      <input 
+        type="password" 
+        id="password" 
+        [(ngModel)]="userForm.password" 
+        name="password"
+        placeholder="Mot de Passe"
+        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-800 focus:border-blue-800" />
+    </div>
+
+    <div class="flex justify-end">
+      <button 
+        type="submit" 
+        class="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline transition duration-150">
+        Mettre à jour
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Affichage de l'utilisateur connecté - version améliorée -->
+<div class="max-w-md mx-auto bg-white rounded-lg shadow-sm overflow-hidden md:max-w-2xl my-4 border border-gray-200 hover:border-blue-800 transition duration-300">
+  <div class="p-4">
+    <h3 class="text-sm font-medium text-gray-500">Utilisateur connecté</h3>
+    <div class="mt-2 flex items-center">
+      <div class="flex-shrink-0 bg-blue-100 rounded-full p-2">
+        <svg class="h-6 w-6 text-blue-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+      </div>
+      <div class="ml-4">
+        <h1 *ngIf="User?.username" routerLink="/users/updateprofil" class="text-lg font-semibold text-blue-800 hover:text-blue-600 cursor-pointer">
+          {{ User?.username }}
+        </h1>
+        <p class="text-sm text-gray-500">Leoni Tunisie</p>
+      </div>
+    </div>
+  </div>
+</div>

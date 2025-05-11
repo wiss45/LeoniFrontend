@@ -1,4 +1,4 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-100">
+<div class="min-h-screen flex items-center justify-center bg-blue-50">
   <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
     <div class="flex justify-center mb-6">
       <img src="https://media.licdn.com/dms/image/v2/D4D0BAQGrUPpxkBBK8A/company-logo_200_200/company-logo_200_200/0/1731596249075/leoni_tunisia_logo?e=2147483647&v=beta&t=TxQmdbr0xoKdH2I_C666t67tIb4Gspur3lstlnuF8Bg" alt="Leoni" class="h-12">
@@ -59,6 +59,10 @@
         class="w-full bg-blue-800 text-white py-2 rounded-lg hover:bg-blue-900 transition duration-200" [disabled]="userfrom.invalid">
         Créer un compte
       </button>
+       <div *ngIf="errorMessage" class="text-red-600 font-medium  text-xs mt-4 text-center">
+        {{ errorMessage }}
+      </div>
+
     </form>
 
     <p class="text-center text-sm text-gray-500 mt-4">

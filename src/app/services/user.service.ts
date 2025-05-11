@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { HttpClient } from '@angular/common/http';
-import { User } from '../interfaces/User';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { RegisterRequest, RegisterResponse, User } from '../interfaces/User';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable({
@@ -42,5 +42,15 @@ private Url = environment.URL + 'users/'
   
   notifyUpdates() {
     this.notificationsUpdated.next();
+  }
+
+   getCurrentUser(): Observable<User> {
+   
+    return this.http.get<User>(`${this.Url}me`);
+  }
+
+  updateCurrentUser(user: RegisterRequest): Observable<RegisterResponse> {
+    
+    return this.http.put<RegisterResponse>(`${this.Url}update/me`, user);
   }
 }

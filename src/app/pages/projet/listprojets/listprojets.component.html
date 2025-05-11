@@ -1,5 +1,5 @@
 <div>
-    <div   class="relative overflow-x-auto shadow-md hover:shadow-lg sm:rounded-lg grid gap-8 p-4 w-full pb-20">
+    <div   class="relative overflow-x-auto   sm:rounded-lg grid gap-8 p-4 w-full pb-20">
       <div class="flex justify-between border-b-1 border-gray-200 gap-4">
         <div class="flex flex-col sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between">
           <div class="relative mb-4">
@@ -81,7 +81,7 @@
             </div>
             <div>
               <p class="text-gray-500">Réel (€)</p>
-              <p class="font-semibold text-gray-800">{{ projet.sommeReel | number:'1.2-2' }}</p>
+              <p class="font-semibold text-gray-800"> {{ getSommeReel(projet.id) | number:'1.2-2' }}</p>
             </div>
             <div class="col-span-2 mb-4">
               <p class="text-gray-500">Écart (€)</p>
@@ -90,7 +90,7 @@
                    'text-green-600': projet.sommeReel <= projet.sommePrevisionnel,
                    'text-red-600': projet.sommeReel > projet.sommePrevisionnel
                  }">
-                {{ (projet.sommeReel - projet.sommePrevisionnel) | number:'1.2-2' }}
+                {{ (getSommeReel(projet.id) - projet.sommePrevisionnel) | number:'1.2-2' }}
               </p>
             </div>
           </div>
@@ -108,18 +108,7 @@
         </div>
       </div>
       
-    <div class="flex gap-3 justify-center mt-4 ">
-        <button [disabled]="page === 1" [ngClass]="{'hidden': page === 1}" (click)="prevPage()" class=" cursor-pointer border-1 border-gray-200 rounded-md shadow px-2 py-1 font-medium hover:text-white hover:bg-black transition">
-          Précédent
-        </button>
-        <button class=" cursor-pointer border-1 border-gray-200 rounded-md shadow px-4 py-1 font-medium hover:text-white hover:bg-black transition">
-          {{page}}
-        </button>
-        <button  [disabled]="page === totalpages" [ngClass]="{'hidden': page === totalpages + 1}" (click)="nextPage()"  class=" cursor-pointer border-1 border-gray-200 rounded-md shadow px-2 py-1 font-medium hover:text-white hover:bg-black transition">
-          Suivant
-        </button>
-      </div>
-      
+    
    
     <app-addprojet
       [IsOpen]="isOpen"

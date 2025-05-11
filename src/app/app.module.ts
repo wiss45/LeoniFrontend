@@ -14,12 +14,15 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptorsService } from './services/token-interceptor.service';
 import { NotificationModule } from './pages/notification/notification.module';
 import { ExcelModule } from './pages/excel/excel.module';
+import { UpdateuserComponent } from './pages/updateuser/updateuser.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainlayoutComponent,
     DashboardComponent,
+    UpdateuserComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,7 +31,7 @@ import { ExcelModule } from './pages/excel/excel.module';
     LucideAngularModule.pick({ LayoutDashboard, Server, Briefcase, FileText }),
     EquipementModule,
     ProjetModule,
-   
+    FormsModule,
     UserModule,
     NotificationModule,
     ExcelModule,

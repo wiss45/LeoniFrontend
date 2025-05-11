@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MainlayoutComponent } from './layout/mainlayout/mainlayout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AuthGuardService } from './services/auth-guard.service';
+import { UpdateuserComponent } from './pages/updateuser/updateuser.component';
 
 const routes: Routes = [
   
@@ -10,6 +11,7 @@ const routes: Routes = [
     children: [
       
       {path: "", component: DashboardComponent,canActivate:[AuthGuardService] },
+      {path: "updateprofil", component: UpdateuserComponent},
       {path:'equipements',loadChildren : ()=>import('./pages/equipement/equipement.module').then(m =>m.EquipementModule),canActivate:[AuthGuardService] },
       {path:'projets',loadChildren : ()=>import('./pages/projet/projet.module').then(m =>m.ProjetModule),canActivate:[AuthGuardService] },
      

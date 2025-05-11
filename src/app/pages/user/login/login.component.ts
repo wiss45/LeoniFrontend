@@ -25,22 +25,23 @@ export class LoginComponent {
     });
   }
 
-  onSubmit(username:string , password:string): void {
-    if (this.loginForm.valid){
-      this.service.login(username,password).subscribe({
-        next : (response)=> {
-          this.router.navigate(['users'])
-          console.log(response)
-        },
-        error : (err)=> {
-          console.error("Erreur lors de connexion",err)
-        }
-      })
-    }
+ onSubmit(username: string, password: string): void {
+  if (this.loginForm.valid) {
+    this.errorMessage = ''; // Réinitialiser le message avant chaque tentative
 
-   
-
+    this.service.login(username, password).subscribe({
+      next: (response) => {
+        this.router.navigate(['users']);
+        console.log(response);
+      },
+      error: (err) => {
+        console.error('Erreur lors de connexion', err);
+        this.errorMessage = 'Nom d’utilisateur ou mot de passe incorrect';
+      }
+    });
+  }
 }
+
 }
 
 

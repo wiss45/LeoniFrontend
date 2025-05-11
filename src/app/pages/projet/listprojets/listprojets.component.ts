@@ -30,6 +30,7 @@ selectedPlan: Plan | null = null;
 plansParProjet: Plan[] = [];
 showPlanModal: boolean = false;
 plans: Plan[] = [];
+allPlans: Plan[] = [];
 filtredList: Plan[] = []
 plan: Plan | null = null;
 isOpenModalPlan: boolean = false;
@@ -46,6 +47,9 @@ ngOnInit() : void {
   this.isAdmin = this.role === 'ADMIN';
   this.loadProjets()
   this.loadPlans()
+  this.filtredlist.forEach(projet => {
+  projet.sommeReel = this.getSommeReel(projet.id);
+});
   }
 
  closeModalPlan(): void {
@@ -81,6 +85,7 @@ ngOnInit() : void {
         this.plans = data.content;
         this.filtredList = data.content;
         this.totalpages = data.totalPages;
+        this.allPlans = data.content;
         console.log(data)
       },
       error: (error) => {
@@ -157,6 +162,13 @@ closePlanModal(): void {
     }
 
   }  
+
+getSommeReel(projetId: number): number {
+  const plans = this.allPlans.filter(plan => plan.projet.id === projetId);
+  return plans.reduce((total, plan) => total + (plan.quantite * plan.equipement.thirdUnitPrice), 0);
+}
+
+
 
 
 

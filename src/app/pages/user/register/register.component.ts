@@ -14,6 +14,8 @@ import { ToastrService } from 'ngx-toastr';
 export class RegisterComponent {
 
 userfrom! : FormGroup
+errorMessage: string = '';
+
 
 Roles =[
   {id:"ADMIN",name:"Admin"},
@@ -47,6 +49,7 @@ onRoleChange(role: string, event: any) {
 
 Register(myform: User): void {
   if (this.userfrom.valid) {
+     this.errorMessage = '';
     this.serviceRegister.register(myform).subscribe({
       next: (response) => {
         this.toastr.success('Utilisateur enregistré avec succès ! ✅', 'Succès'); 
@@ -56,6 +59,8 @@ Register(myform: User): void {
       error: (err) => {
         this.toastr.error('Échec de l\'enregistrement ❌', 'Erreur'); 
         console.error("Erreur lors de l'ajout d'User", err);
+         this.errorMessage = "Échec de l’inscription. Nom Utilisateur ou Email utilisé déja!.";
+
       }
     });
   } else {

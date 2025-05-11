@@ -7,6 +7,7 @@ import { RegisterComponent } from './register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 
+
 @NgModule({
   declarations: [
     LoginComponent,
