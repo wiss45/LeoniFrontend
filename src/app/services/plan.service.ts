@@ -7,6 +7,12 @@ import { Plan } from '../interfaces/plan';
 import { PaginatedPlanResponse } from '../interfaces/paginatedResponsePlan';
 import { environment } from '../../environments/environment.development';
 
+export enum StatutEquipement {
+  EN_ATTENTE = 'EN_ATTENTE',
+  RECU_EN_RETARD = 'RECU_EN_RETARD',
+  RECU_A_TEMPS = 'RECU_A_TEMPS'
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -53,5 +59,9 @@ export class PlanService {
  /* nombreEquipementsPlan(id: number): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}nombreequipementsplan/${id}`);
   }*/
+
+    getStatutCountsPerProjet(): Observable<Record<number, Record<StatutEquipement, number>>> {
+    return this.http.get<Record<number, Record<StatutEquipement, number>>>(`${this.apiUrl}statut-par-projet`);
+  }
 
 }

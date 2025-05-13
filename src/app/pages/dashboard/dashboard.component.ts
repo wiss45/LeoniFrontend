@@ -4,6 +4,7 @@ import { EquipementService } from '../../services/equipement.service';
 import { ProjetService } from '../../services/projet.service';
 import { forkJoin } from 'rxjs';
 import { Projet } from '../../interfaces/projet';
+import { PlanService, StatutEquipement } from '../../services/plan.service';
 @Component({
   selector: 'app-dashboard',
   standalone: false,
@@ -70,11 +71,31 @@ recentProjects = [
 ];
 
 
-constructor(private serviceEquipements : EquipementService , private serviceProjets : ProjetService ) { }
+ statutData: Record<number, Record<StatutEquipement, number>> = {};
+
+  statutKeys = Object.values(StatutEquipement);
+
+
+
+constructor(private serviceEquipements : EquipementService , private serviceProjets : ProjetService , private planService: PlanService ) { }
 
 
 ngOnInit() : void {
+    this.planService.getStatutCountsPerProjet().subscribe(data => {
+      this.statutData = data;
+      console.log(data)
+    });
 this.loadstat()
+}
+
+
+getPercentage(value: number, max: number): number {
+  return max > 0 ? (value / max) : 0;
+}
+
+getMaxValue(projetData: Record<StatutEquipement, number>): number {
+  const values = Object.values(projetData) as number[];
+  return Math.max(...values, 0); // Ajout de 0 comme fallback
 }
 
 

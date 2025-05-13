@@ -133,4 +133,75 @@
     </div>
   </div>
 
+<div class="container mx-auto px-4 py-8">
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Statut des Plans par Projet - LEONI Tunisie</h2>
+    
+    <!-- Graphique en barres -->
+    <div class="mb-10">
+      <h3 class="text-lg font-semibold text-gray-700 mb-4">Visualisation des statuts</h3>
+      <div class=" flex items-end space-x-2">
+        <div *ngFor="let projet of statutData | keyvalue" class="flex-1 flex space-x-1 items-end">
+          <div *ngFor="let statut of statutKeys" 
+               class="bg-blue-500 hover:bg-blue-600 transition-all flex-1 relative group"
+               [style.height.%]="getPercentage(projet.value[statut] || 0, getMaxValue(projet.value)) * 70">
+            <span class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+              {{statut}}: {{projet.value[statut] || 0}}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-between mt-2 text-xs text-gray-600">
+        <span *ngFor="let projet of statutData | keyvalue" class="flex-1 text-center truncate">
+          Projet {{projet.key}}
+        </span>
+      </div>
+    </div>
+
+    <!-- Tableau amélioré -->
+    <div class="overflow-x-auto bg-white shadow-md rounded-lg border border-gray-200 p-4">
+  <table class="min-w-full table-auto text-sm text-gray-700">
+    <thead class="bg-gray-100">
+      <tr>
+        <th class="px-6 py-3 text-left font-semibold text-gray-700 uppercase">Projet ID</th>
+        <th *ngFor="let statut of statutKeys" class="px-6 py-3 text-left font-semibold text-gray-700 uppercase">
+          {{ statut }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let projetId of statutData | keyvalue" class="hover:bg-gray-50 transition duration-150">
+        <td class="px-6 py-4 font-medium text-gray-900 border-b">{{ projetId.key }}</td>
+        <td *ngFor="let statut of statutKeys" class="px-6 py-4 border-b">
+          <span
+            class="inline-block px-3 py-1 rounded-full text-xs font-semibold"
+            [ngClass]="{
+              'bg-green-100 text-green-800': statut === 'RECU_A_TEMPS',
+              'bg-blue-100 text-blue-800': statut === 'RECU_EN_RETARD',
+              'bg-yellow-100 text-yellow-800': statut === 'EN_ATTENTE',
+              'bg-gray-100 text-gray-800': !['RECU_A_TEMPS', 'RECU_EN_RETARD', 'EN_ATTENTE'].includes(statut)
+            }">
+            {{ projetId.value[statut] || 0 }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Légende -->
+  <div class="mt-6 flex flex-wrap gap-4">
+    <div *ngFor="let statut of statutKeys" class="flex items-center space-x-2">
+      <span
+        class="inline-block w-4 h-4 rounded-full"
+        [ngClass]="{
+          'bg-green-500': statut === 'RECU_A_TEMPS',
+          'bg-blue-500': statut === 'RECU_EN_RETARD',
+          'bg-yellow-500': statut === 'EN_ATTENTE',
+          'bg-gray-500': !['RECU_A_TEMPS', 'RECU_EN_RETARD', 'EN_ATTENTE'].includes(statut)
+        }"></span>
+      <span class="text-sm text-gray-600">{{ statut }}</span>
+    </div>
+  </div>
+</div>
+
 </div>

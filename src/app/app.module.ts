@@ -34,7 +34,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     UserModule,
     NotificationModule,
-    ExcelModule,
+    ExcelModule
   ],
   providers: [
     {
